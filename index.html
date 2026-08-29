@@ -614,7 +614,10 @@ const state = {
 function parseUtc(str){
   if(!str) return null;
   const hasZone = /Z$|[+-]\d{2}:?\d{2}$/.test(str.trim());
-  const iso = str.replace(" ", "T") + (hasZone ? "" : "+05:30");
+  // tx_date is written by the POS app as a naive UTC timestamp (no zone
+  // suffix). Treat it as UTC — NOT as already-local IST — and let the
+  // browser convert to local time when displaying (toLocaleString etc).
+  const iso = str.replace(" ", "T") + (hasZone ? "" : "Z");
   const d = new Date(iso);
   return isNaN(d.getTime()) ? null : d;
 }
