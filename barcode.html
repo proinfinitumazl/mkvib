@@ -718,24 +718,22 @@ table.inv-table tbody tr.row-selected {
   background: #e2e8f0;
 }
 
-/* Single Khadi Tag Tile (With Brown Rosette KVIB Header) */
+/* Single Khadi Tag Tile (With Brown Rosette KVIB Header & Footer) */
 .tag-tile {
   background: #ffffff;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   position: relative;
+  height: 100%;
 }
 .tag-tile-header {
-  flex: 0 0 57%;
+  flex: 0 0 57.7%;
   width: 100%;
   background-color: #2b1309;
-  background-size: cover;
-  background-position: center;
+  background-size: 100% 100%;
+  background-position: center top;
   background-repeat: no-repeat;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   position: relative;
 }
 .tag-tile-barcode-box {
@@ -745,7 +743,8 @@ table.inv-table tbody tr.row-selected {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2px 4px 4px;
+  padding: 2px 4px 1px;
+  overflow: hidden;
 }
 .tag-tile-barcode-box svg, .tag-tile-barcode-box canvas {
   width: 92%;
@@ -762,6 +761,15 @@ table.inv-table tbody tr.row-selected {
   line-height: 1.1;
   margin-top: 1px;
   text-align: center;
+}
+.tag-tile-footer {
+  flex: 0 0 3.8%;
+  min-height: 4px;
+  width: 100%;
+  background-color: #2b1309;
+  background-size: 100% 100%;
+  background-position: center bottom;
+  background-repeat: no-repeat;
 }
 
 /* Single Barcode Sticker Tile (Pure barcode + text, matching user screenshot!) */
@@ -1170,12 +1178,19 @@ table.inv-table tbody tr.row-selected {
   let activeCatFilter = "all"; // "all", "khadi", "vi", "others"
   let previewFilterType = "all"; // "all", "tag", "sticker"
 
-  // Pre-load Tag Header Image (from base64 or file)
+  // Pre-load High-Resolution Tag Header & Footer Images (from base64 or file)
   const tagHeaderImg = new Image();
   if (window.KVIB_TAG_HEADER_DATA) {
     tagHeaderImg.src = window.KVIB_TAG_HEADER_DATA;
   } else {
-    tagHeaderImg.src = "tag_header_hires.png";
+    tagHeaderImg.src = "tag_header_hq.png";
+  }
+
+  const tagFooterImg = new Image();
+  if (window.KVIB_TAG_FOOTER_DATA) {
+    tagFooterImg.src = window.KVIB_TAG_FOOTER_DATA;
+  } else {
+    tagFooterImg.src = "tag_footer_hq.png";
   }
 
   // Exact Mizoram KVI Board sample data matching photos
@@ -1441,7 +1456,7 @@ table.inv-table tbody tr.row-selected {
     updateSummary();
   }
 
-  // Render a Single Khadi Tag Element (Matching user's photo with Guilloche Rosette Header)
+  // Render a Single Khadi Tag Element (Matching official digital tag sample with Header & Footer!)
   function createTagTileElement(barcodeCode) {
     const tile = document.createElement("div");
     tile.className = "tag-tile";
@@ -1451,7 +1466,7 @@ table.inv-table tbody tr.row-selected {
     if (window.KVIB_TAG_HEADER_DATA) {
       head.style.backgroundImage = `url(${window.KVIB_TAG_HEADER_DATA})`;
     } else {
-      head.style.backgroundImage = `url('tag_header_hires.png')`;
+      head.style.backgroundImage = `url('tag_header_hq.png')`;
     }
 
     const bBox = document.createElement("div");
@@ -1481,8 +1496,17 @@ table.inv-table tbody tr.row-selected {
     codeLbl.textContent = barcodeCode;
     bBox.appendChild(codeLbl);
 
+    const foot = document.createElement("div");
+    foot.className = "tag-tile-footer";
+    if (window.KVIB_TAG_FOOTER_DATA) {
+      foot.style.backgroundImage = `url(${window.KVIB_TAG_FOOTER_DATA})`;
+    } else {
+      foot.style.backgroundImage = `url('tag_footer_hq.png')`;
+    }
+
     tile.appendChild(head);
     tile.appendChild(bBox);
+    tile.appendChild(foot);
     return tile;
   }
 
@@ -1627,16 +1651,16 @@ table.inv-table tbody tr.row-selected {
     });
   }
 
-  // Generate Khadi Tag image on canvas for PDF export
+  // Generate Khadi Tag image on canvas for PDF export (High-Resolution matching official sample with Footer)
   function drawTagToCanvas(targetCanvas, barcodeCode) {
-    const w = 400;
-    const h = 600;
+    const w = 696;
+    const h = 1012;
     targetCanvas.width = w;
     targetCanvas.height = h;
     const ctx = targetCanvas.getContext("2d");
 
-    // 1. Top Emblem (approx 57% of height)
-    const headerH = Math.round(h * 0.57);
+    // 1. Top Rosette Header (approx 57.7% of height = 584px)
+    const headerH = 584;
     if (tagHeaderImg.complete && tagHeaderImg.naturalWidth > 0) {
       ctx.drawImage(tagHeaderImg, 0, 0, w, headerH);
     } else {
@@ -1644,39 +1668,52 @@ table.inv-table tbody tr.row-selected {
       ctx.fillRect(0, 0, w, headerH);
     }
 
-    // 2. Bottom White Area
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, headerH, w, h - headerH);
+    // 2. Footer Strip at bottom (approx 3.4% of height = 34px)
+    const footerH = 34;
+    const footerY = h - footerH;
+    if (tagFooterImg.complete && tagFooterImg.naturalWidth > 0) {
+      ctx.drawImage(tagFooterImg, 0, footerY, w, footerH);
+    } else {
+      ctx.fillStyle = "#2b1309";
+      ctx.fillRect(0, footerY, w, footerH);
+    }
 
-    // 3. Render barcode onto temporary canvas
+    // 3. Middle White Area for Barcode & Label
+    const barcodeY = headerH;
+    const barcodeBoxH = footerY - barcodeY;
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, barcodeY, w, barcodeBoxH);
+
+    // 4. Render barcode onto temporary canvas
     const bcCanvas = document.createElement("canvas");
     try {
       if (typeof JsBarcode === "function") {
         JsBarcode(bcCanvas, barcodeCode, {
           format: "CODE128",
-          width: 2.2,
-          height: 68,
+          width: 3.6,
+          height: 240,
           displayValue: false,
-          margin: 4,
+          margin: 0,
           background: "#ffffff",
           lineColor: "#000000"
         });
       }
     } catch(e) {}
 
-    const bcW = Math.min(w - 24, bcCanvas.width);
-    const bcH = Math.min(h - headerH - 30, bcCanvas.height);
-    const bcX = (w - bcW) / 2;
-    const bcY = headerH + 8;
-    ctx.drawImage(bcCanvas, bcX, bcY, bcW, bcH);
+    // Barcode bars: 636px wide (30px margin on each side), 249px height
+    const bcW = w - 60;
+    const bcH = 249;
+    const bcX = 30;
+    const bcDrawY = barcodeY + 24;
+    ctx.drawImage(bcCanvas, bcX, bcDrawY, bcW, bcH);
 
-    // 4. Barcode Text Label Centered Below
+    // 5. Barcode Text Label Centered Below
     ctx.fillStyle = "#0f172a";
-    ctx.font = "bold 20px 'JetBrains Mono', monospace";
+    ctx.font = "bold 42px 'JetBrains Mono', 'Courier New', monospace";
     ctx.textAlign = "center";
-    ctx.fillText(barcodeCode, w / 2, headerH + bcH + 28);
+    ctx.fillText(barcodeCode, w / 2, bcDrawY + bcH + 54);
 
-    // 5. Delicate outer cut border
+    // 6. Delicate outer cut border
     ctx.strokeStyle = "#cbd5e1";
     ctx.lineWidth = 1;
     ctx.strokeRect(0, 0, w, h);
