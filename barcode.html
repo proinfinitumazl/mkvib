@@ -1,0 +1,2144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KVIB Barcode Studio — Mizoram KVI Board</title>
+<link rel="icon" href="kvilogo.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+<!-- Offline & CDN resilient scripts -->
+<script src="jsbarcode.min.js" onerror="this.onerror=null; var s=document.createElement('script'); s.src='https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js'; document.head.appendChild(s);"></script>
+<script src="jspdf.umd.min.js" onerror="this.onerror=null; var s=document.createElement('script'); s.src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'; document.head.appendChild(s);"></script>
+<script src="tag_assets.js"></script>
+
+<style>
+:root {
+  --bg: #090e17;
+  --surface: #0f172a;
+  --panel: #131e33;
+  --panel-hover: #182742;
+  --border: rgba(255, 255, 255, 0.09);
+  --border-focus: #14b8a6;
+  --teal: #0d9488;
+  --teal-glow: #14b8a6;
+  --emerald: #10b981;
+  --cyan: #38bdf8;
+  --amber: #f59e0b;
+  --text-main: #f8fafc;
+  --text-dim: #94a3b8;
+  --text-muted: #64748b;
+  --danger: #ef4444;
+  --radius: 14px;
+  --shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text-main);
+  min-height: 100vh;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  background-image: 
+    radial-gradient(ellipse 65% 50% at 20% 0%, rgba(13, 148, 136, 0.18), transparent 70%),
+    radial-gradient(ellipse 60% 45% at 85% 100%, rgba(16, 185, 129, 0.12), transparent 70%);
+}
+
+button { font-family: inherit; cursor: pointer; border: none; }
+input, select { font-family: inherit; }
+a { text-decoration: none; color: inherit; }
+
+/* Header */
+.app-header {
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 60;
+}
+.brand-group {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.brand-logo-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+}
+.brand-logo-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.brand-title-wrap h1 {
+  font-size: 16px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.brand-title-wrap p {
+  font-size: 11.5px;
+  color: var(--text-dim);
+}
+.pill-badge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 2px 7px;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+.pill-cyan {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.db-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 13px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(13, 148, 136, 0.15);
+  border: 1px solid rgba(20, 184, 166, 0.3);
+  color: #2dd4bf;
+}
+.db-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+}
+.db-pill.disconnected {
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #f87171;
+}
+.db-pill.disconnected .db-dot {
+  background: #ef4444;
+  box-shadow: 0 0 8px #ef4444;
+}
+
+.btn-header-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  color: #e2e8f0;
+  font-size: 12.5px;
+  font-weight: 600;
+  transition: all .15s ease;
+}
+.btn-header-back:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+/* Main Container */
+.main-wrapper {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 24px 24px 60px;
+}
+
+/* Control Hub Bar */
+.control-hub {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 18px 22px;
+  box-shadow: var(--shadow);
+  margin-bottom: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.hub-row-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.hub-views {
+  display: flex;
+  background: #090e17;
+  padding: 4px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.tab-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-dim);
+  background: transparent;
+  transition: all .15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.tab-btn:hover { color: #fff; }
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--teal), var(--emerald));
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.4);
+}
+
+.hub-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.btn-action-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: linear-gradient(135deg, var(--teal), var(--emerald));
+  color: #fff;
+  border-radius: 11px;
+  font-size: 13.5px;
+  font-weight: 700;
+  box-shadow: 0 8px 18px -4px rgba(13, 148, 136, 0.5);
+  transition: all .15s ease;
+}
+.btn-action-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 22px -4px rgba(13, 148, 136, 0.65);
+}
+.btn-action-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 15px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 11px;
+  color: #f1f5f9;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all .15s ease;
+}
+.btn-action-secondary:hover {
+  background: rgba(255, 255, 255, 0.13);
+  color: #fff;
+}
+
+/* Secondary toolbar row */
+.hub-row-settings {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  flex-wrap: wrap;
+}
+.settings-left-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.control-select-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.control-select-group label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+.select-styled {
+  background: #090e17;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  outline: none;
+  transition: border-color .15s ease;
+}
+.select-styled:focus {
+  border-color: var(--teal-glow);
+}
+
+.summary-stat-pill {
+  background: rgba(20, 184, 166, 0.1);
+  border: 1px solid rgba(20, 184, 166, 0.25);
+  border-radius: 10px;
+  padding: 7px 14px;
+  font-size: 13px;
+  color: #cbd5e1;
+}
+.summary-stat-pill strong {
+  color: #2dd4bf;
+  font-family: var(--font-mono);
+}
+
+/* View Panels */
+.view-panel {
+  display: none;
+}
+.view-panel.active {
+  display: block;
+}
+
+/* Filter Card */
+.filter-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.search-input-box {
+  position: relative;
+  flex: 1;
+  min-width: 250px;
+}
+.search-input-box input {
+  width: 100%;
+  padding: 10px 14px 10px 38px;
+  background: #090e17;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 13.5px;
+}
+.search-input-box input:focus {
+  outline: none;
+  border-color: var(--teal-glow);
+}
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+}
+
+/* Category Filter Pills */
+.cat-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.cat-pill {
+  padding: 6px 12px;
+  background: #090e17;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: var(--text-dim);
+  font-size: 12px;
+  font-weight: 600;
+  transition: all .15s ease;
+}
+.cat-pill:hover {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+}
+.cat-pill.active {
+  background: rgba(13, 148, 136, 0.2);
+  border-color: var(--teal-glow);
+  color: #2dd4bf;
+}
+
+/* Quick Presets Group */
+.presets-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.presets-group .label-text {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-right: 4px;
+}
+.btn-preset {
+  padding: 6px 12px;
+  background: #090e17;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  color: var(--text-dim);
+  font-size: 12px;
+  font-weight: 600;
+  transition: all .15s ease;
+}
+.btn-preset:hover {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  border-color: rgba(255,255,255,0.2);
+}
+.btn-preset.primary-preset {
+  background: rgba(13, 148, 136, 0.15);
+  border-color: rgba(20, 184, 166, 0.35);
+  color: #2dd4bf;
+}
+.btn-preset.primary-preset:hover {
+  background: rgba(13, 148, 136, 0.25);
+  color: #fff;
+}
+
+/* Inventory Table */
+.table-container {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+table.inv-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 13.5px;
+}
+table.inv-table thead th {
+  background: #0b1322;
+  color: var(--text-dim);
+  padding: 14px 16px;
+  font-weight: 700;
+  font-size: 11.5px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+table.inv-table tbody td {
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  vertical-align: middle;
+}
+table.inv-table tbody tr:hover {
+  background: rgba(255,255,255,0.02);
+}
+table.inv-table tbody tr.row-selected {
+  background: rgba(13, 148, 136, 0.07);
+}
+
+.td-barcode {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: #38bdf8;
+  letter-spacing: 0.02em;
+}
+.td-name {
+  font-weight: 700;
+  color: #f1f5f9;
+}
+.td-cat {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+.td-price {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: #f8fafc;
+}
+.td-stock {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: #34d399;
+}
+.td-stock.low-stock {
+  color: #fb923c;
+}
+
+/* Format Toggle Pill Button in Table */
+.btn-format-toggle {
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 11.5px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all .15s ease;
+  white-space: nowrap;
+}
+.btn-format-toggle.format-tag {
+  background: rgba(180, 83, 9, 0.18);
+  border-color: rgba(245, 158, 11, 0.4);
+  color: #fbbf24;
+}
+.btn-format-toggle.format-tag:hover {
+  background: rgba(180, 83, 9, 0.3);
+  border-color: rgba(245, 158, 11, 0.65);
+}
+.btn-format-toggle.format-sticker {
+  background: rgba(56, 189, 248, 0.15);
+  border-color: rgba(56, 189, 248, 0.4);
+  color: #38bdf8;
+}
+.btn-format-toggle.format-sticker:hover {
+  background: rgba(56, 189, 248, 0.28);
+  border-color: rgba(56, 189, 248, 0.65);
+}
+
+/* Quantity Control */
+.qty-stepper {
+  display: inline-flex;
+  align-items: center;
+  background: #090e17;
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.qty-btn {
+  width: 28px;
+  height: 30px;
+  background: transparent;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  transition: all .1s ease;
+}
+.qty-btn:hover {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+}
+.qty-input {
+  width: 44px;
+  height: 30px;
+  border: none;
+  background: transparent;
+  text-align: center;
+  color: #fff;
+  font-size: 13px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  outline: none;
+}
+
+/* VIEW 2: SHEET PREVIEW */
+.preview-screen-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: center;
+}
+.preview-toolbar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 18px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.preview-subtabs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.preview-subtab-btn {
+  padding: 6px 13px;
+  background: #090e17;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  color: var(--text-dim);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all .15s ease;
+}
+.preview-subtab-btn:hover {
+  color: #fff;
+  border-color: rgba(255,255,255,0.25);
+}
+.preview-subtab-btn.active {
+  background: linear-gradient(135deg, var(--teal), var(--emerald));
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 10px rgba(13, 148, 136, 0.4);
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.btn-pager {
+  padding: 7px 14px;
+  background: #090e17;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  color: #e2e8f0;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+.btn-pager:hover:not(:disabled) {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+}
+.btn-pager:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* Virtual Sheet Canvas Container */
+.virtual-sheet-stage {
+  width: 100%;
+  overflow-x: auto;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+/* The Printable Sheet Frame */
+.virtual-sheet {
+  background: #ffffff;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.7);
+  display: grid;
+  position: relative;
+  transition: transform 0.2s ease;
+  transform-origin: top center;
+  border: 1px solid #94a3b8;
+  margin: 0 auto;
+}
+
+/* 1. KHADI TAG SHEETS (Large tags with Rosette Header) */
+/* 12x18 (9 columns x 4 rows = 36 tags) */
+.virtual-sheet.layout-12x18-tag {
+  width: 960px;
+  height: 640px; /* 18:12 aspect ratio */
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 1px;
+  background: #cbd5e1;
+}
+/* A4 Landscape (6 columns x 3 rows = 18 tags) */
+.virtual-sheet.layout-a4-land-tag {
+  width: 890px;
+  height: 630px; /* A4 aspect ratio 297:210 */
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 1px;
+  background: #cbd5e1;
+}
+/* A4 Portrait (4 columns x 4 rows = 16 tags) */
+.virtual-sheet.layout-a4-port-tag {
+  width: 630px;
+  height: 890px; /* A4 aspect ratio 210:297 */
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 1px;
+  background: #cbd5e1;
+}
+
+/* 2. BARCODE STICKER SHEETS (Plain barcode stickers, matching user photo!) */
+/* 12x18 (9 columns x 9 rows = 81 stickers) */
+.virtual-sheet.layout-12x18-sticker {
+  width: 960px;
+  height: 640px; /* 18:12 aspect ratio */
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(9, 1fr);
+  gap: 1px;
+  background: #e2e8f0;
+}
+/* A4 Landscape (6 columns x 6 rows = 36 stickers) */
+.virtual-sheet.layout-a4-land-sticker {
+  width: 890px;
+  height: 630px; /* A4 aspect ratio 297:210 */
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  gap: 1px;
+  background: #e2e8f0;
+}
+/* A4 Portrait (4 columns x 8 rows = 32 stickers) */
+.virtual-sheet.layout-a4-port-sticker {
+  width: 630px;
+  height: 890px; /* A4 aspect ratio 210:297 */
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  gap: 1px;
+  background: #e2e8f0;
+}
+
+/* Single Khadi Tag Tile (With Brown Rosette KVIB Header) */
+.tag-tile {
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+.tag-tile-header {
+  flex: 0 0 57%;
+  width: 100%;
+  background-color: #2b1309;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.tag-tile-barcode-box {
+  flex: 1;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 4px 4px;
+}
+.tag-tile-barcode-box svg, .tag-tile-barcode-box canvas {
+  width: 92%;
+  height: auto;
+  max-height: 48px;
+  display: block;
+}
+.tag-barcode-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: 0.1em;
+  line-height: 1.1;
+  margin-top: 1px;
+  text-align: center;
+}
+
+/* Single Barcode Sticker Tile (Pure barcode + text, matching user screenshot!) */
+.sticker-tile {
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 6px 4px;
+  overflow: hidden;
+  position: relative;
+  border: 1px dashed rgba(0, 0, 0, 0.22); /* delicate cutting guide */
+  box-sizing: border-box;
+}
+.sticker-tile-barcode-box {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.sticker-tile-barcode-box svg, .sticker-tile-barcode-box canvas {
+  width: 96%;
+  height: auto;
+  max-height: 48px;
+  display: block;
+}
+.sticker-barcode-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+  margin-top: 1px;
+  text-align: center;
+}
+
+/* Print Only Stylesheet */
+@media print {
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .app-header, .control-hub, .view-panel:not(.print-panel-active), .preview-toolbar, .btn-header-back {
+    display: none !important;
+  }
+  .main-wrapper {
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .virtual-sheet-stage {
+    padding: 0 !important;
+    display: block !important;
+    overflow: visible !important;
+  }
+  .virtual-sheet {
+    box-shadow: none !important;
+    border: none !important;
+    page-break-after: always;
+    page-break-inside: avoid;
+    margin: 0 !important;
+  }
+  
+  /* 12x18 inches print format */
+  .virtual-sheet.layout-12x18-tag, .virtual-sheet.layout-12x18-sticker {
+    width: 18in !important;
+    height: 12in !important;
+  }
+  /* A4 landscape print format */
+  .virtual-sheet.layout-a4-land-tag, .virtual-sheet.layout-a4-land-sticker {
+    width: 297mm !important;
+    height: 210mm !important;
+  }
+  /* A4 portrait print format */
+  .virtual-sheet.layout-a4-port-tag, .virtual-sheet.layout-a4-port-sticker {
+    width: 210mm !important;
+    height: 297mm !important;
+  }
+}
+
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 20px;
+}
+.modal-overlay.show {
+  display: flex;
+}
+.modal-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 30px;
+  max-width: 440px;
+  width: 100%;
+  box-shadow: var(--shadow);
+}
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.modal-head h3 {
+  font-size: 18px;
+  font-weight: 800;
+  color: #fff;
+}
+.modal-close {
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 20px;
+  padding: 4px;
+}
+.modal-close:hover { color: #fff; }
+
+.modal-field {
+  margin-bottom: 16px;
+}
+.modal-field label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+}
+.modal-field input {
+  width: 100%;
+  padding: 11px 14px;
+  background: #090e17;
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 14px;
+}
+.modal-field input:focus {
+  outline: none;
+  border-color: var(--teal-glow);
+}
+.modal-btn-submit {
+  width: 100%;
+  padding: 13px 20px;
+  background: linear-gradient(135deg, var(--teal), var(--emerald));
+  color: #fff;
+  border-radius: 11px;
+  font-size: 14px;
+  font-weight: 700;
+  margin-top: 10px;
+}
+
+/* Toast */
+.toast-msg {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid var(--teal-glow);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 13.5px;
+  font-weight: 600;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  z-index: 120;
+  display: none;
+  align-items: center;
+  gap: 10px;
+  animation: slideToast 0.25s ease-out;
+}
+@keyframes slideToast {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="app-header">
+  <div class="brand-group">
+    <div class="brand-logo-wrap">
+      <img src="kvilogo.jpg" alt="KVIB Logo" onerror="this.src='kvilogo.png'">
+    </div>
+    <div class="brand-title-wrap">
+      <h1>
+        <span>Mizoram KVI Board</span>
+        <span class="pill-badge pill-cyan">Barcode Studio</span>
+      </h1>
+      <p>Khadi Tags &amp; VI Barcode Stickers — Commercial Press (12x18") &amp; A4</p>
+    </div>
+  </div>
+
+  <div class="header-right">
+    <div class="db-pill" id="db-status-pill">
+      <span class="db-dot"></span>
+      <span id="db-status-text">Connecting to Firebase…</span>
+    </div>
+    <div class="user-pill" id="user-display-pill" style="display:inline-flex; align-items:center; gap:7px; padding:6px 13px; border-radius:20px; font-size:12px; font-weight:600; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:#cbd5e1;">
+      <span>👤</span>
+      <span id="user-email-text">Signed In</span>
+    </div>
+    <a href="index.html" class="btn-header-back">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      <span>POS Monitor</span>
+    </a>
+    <button type="button" class="btn-action-secondary" id="btn-studio-signout" title="Sign out of KVIB Portal" style="padding:7px 12px; font-size:12px;">
+      <span>Sign Out ⏻</span>
+    </button>
+  </div>
+</header>
+
+<main class="main-wrapper">
+  <!-- Control Hub Bar -->
+  <section class="control-hub">
+    <div class="hub-row-top">
+      <div class="hub-views">
+        <button type="button" class="tab-btn active" id="tab-btn-chooser">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg>
+          <span>1. Select Items &amp; Qty</span>
+        </button>
+        <button type="button" class="tab-btn" id="tab-btn-preview">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+          <span>2. Live Sheet Preview</span>
+        </button>
+      </div>
+
+      <div class="hub-actions">
+        <button type="button" class="btn-action-secondary" id="btn-refresh-cloud" title="Reload from Firebase">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+          </svg>
+          <span>Refresh DB</span>
+        </button>
+        <button type="button" class="btn-action-secondary" id="btn-download-pdf">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span>Download PDF</span>
+        </button>
+        <button type="button" class="btn-action-primary" id="btn-print-sheet">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+            <rect x="6" y="14" width="12" height="8"></rect>
+          </svg>
+          <span>Print Sheet (Ctrl+P)</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Secondary Toolbar Row: Paper Layout & Format Mode Selection -->
+    <div class="hub-row-settings">
+      <div class="settings-left-group">
+        <div class="control-select-group">
+          <label for="paper-layout-select">Paper Size:</label>
+          <select id="paper-layout-select" class="select-styled">
+            <option value="press_12x18" selected>12x18" Press Sheet (36 Tags · 81 Stickers) [Recommended]</option>
+            <option value="a4_land">A4 Sheet - Landscape (18 Tags · 36 Stickers)</option>
+            <option value="a4_port">A4 Sheet - Portrait (16 Tags · 32 Stickers)</option>
+          </select>
+        </div>
+
+        <div class="control-select-group">
+          <label for="global-format-mode">Format Rule:</label>
+          <select id="global-format-mode" class="select-styled">
+            <option value="auto" selected>✨ Auto by Category (Khadi ➔ Tag, VI &amp; Others ➔ Sticker)</option>
+            <option value="all_tags">🏷️ Force All to Khadi Tags (Cardstock)</option>
+            <option value="all_stickers">|||| Force All to Barcode Stickers (Plain)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="summary-stat-pill" id="summary-stat-pill">
+        Selected: <strong id="sum-items-count">0</strong> products • Total: <strong id="sum-tags-count">0</strong> (<span id="sum-format-breakdown">0 Tags · 0 Stickers</span>) — <strong id="sum-sheets-count">0 Sheets</strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIEW 1: INVENTORY CHOOSER -->
+  <section class="view-panel active" id="view-chooser">
+    <!-- Filter and Presets -->
+    <div class="filter-card">
+      <div class="search-input-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="inv-search-input" placeholder="Search product name, barcode (e.g. mkvib0005, mkvib0215), or category...">
+      </div>
+
+      <!-- Category Filter Pills -->
+      <div class="cat-filter-group">
+        <button type="button" class="cat-pill active" data-cat="all">All Items</button>
+        <button type="button" class="cat-pill" data-cat="khadi">🏷️ Khadi (Tags)</button>
+        <button type="button" class="cat-pill" data-cat="vi">|||| V.I (Stickers)</button>
+        <button type="button" class="cat-pill" data-cat="others">Others</button>
+      </div>
+
+      <!-- Quick Presets -->
+      <div class="presets-group">
+        <span class="label-text">Presets:</span>
+        <button type="button" class="btn-preset primary-preset" id="preset-stock">Stock Qty (All)</button>
+        <button type="button" class="btn-preset" id="preset-1">1 Each</button>
+        <button type="button" class="btn-preset" id="preset-2">2 Each</button>
+        <button type="button" class="btn-preset" id="preset-5">5 Each</button>
+        <button type="button" class="btn-preset" id="preset-clear">Clear All</button>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-container">
+      <table class="inv-table" id="inv-table">
+        <thead>
+          <tr>
+            <th style="width:40px; text-align:center;"><input type="checkbox" id="check-all-items" title="Select all items"></th>
+            <th style="width:130px;">Barcode</th>
+            <th>Item / Product Name</th>
+            <th style="width:160px;">Category</th>
+            <th style="width:140px; text-align:center;">Print Format</th>
+            <th style="width:110px;">Price (₹)</th>
+            <th style="width:85px;">Stock</th>
+            <th style="width:140px; text-align:center;">Print Qty</th>
+          </tr>
+        </thead>
+        <tbody id="inv-table-body">
+          <!-- Dynamically populated -->
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- VIEW 2: LIVE SHEET PREVIEW -->
+  <section class="view-panel" id="view-preview">
+    <div class="preview-screen-wrap">
+      <div class="preview-toolbar">
+        <div class="preview-subtabs" id="preview-subtabs">
+          <button type="button" class="preview-subtab-btn active" data-view-type="all">All Sheets (<span id="count-all-sheets">0</span>)</button>
+          <button type="button" class="preview-subtab-btn" data-view-type="tag">🏷️ Khadi Tags (<span id="count-tag-sheets">0</span>)</button>
+          <button type="button" class="preview-subtab-btn" data-view-type="sticker">|||| Barcode Stickers (<span id="count-sticker-sheets">0</span>)</button>
+        </div>
+
+        <div class="pagination-controls">
+          <button type="button" class="btn-pager" id="prev-sheet-btn">◀ Previous Sheet</button>
+          <span style="font-size:13px; font-weight:700; color:#fff;" id="sheet-page-indicator">Sheet 1 of 1</span>
+          <button type="button" class="btn-pager" id="next-sheet-btn">Next Sheet ▶</button>
+        </div>
+
+        <div style="font-size:12px; color:var(--text-dim);" id="preview-grid-info">
+          Grid: <strong>Loading...</strong>
+        </div>
+      </div>
+
+      <!-- Virtual Sheet Stage -->
+      <div class="virtual-sheet-stage" id="virtual-sheet-stage">
+        <!-- Rendered sheet will be inserted here -->
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Toast Message Container -->
+<div class="toast-msg" id="toast-msg"></div>
+
+<script>
+(function() {
+  // STRICT SECURITY GUARD: Authentication required
+  // If user is not logged in, redirect immediately to index.html
+  const authSession = localStorage.getItem("kvib_monitor_refresh");
+  if (!authSession) {
+    window.location.replace("index.html");
+    return;
+  }
+
+  let CONFIG = {
+    FIREBASE_API_KEY: "AIzaSyAmFzuBLB_5F8ngoB_GYUopGZeTJ5Cw0_A",
+    FIREBASE_URL: "https://mkvib-fa451-default-rtdb.asia-southeast1.firebasedatabase.app"
+  };
+
+  // State
+  let dbItems = [];
+  let currentSheetIndex = 0;
+  let activeTab = "chooser"; // "chooser" or "preview"
+  let activeCatFilter = "all"; // "all", "khadi", "vi", "others"
+  let previewFilterType = "all"; // "all", "tag", "sticker"
+
+  // Pre-load Tag Header Image (from base64 or file)
+  const tagHeaderImg = new Image();
+  if (window.KVIB_TAG_HEADER_DATA) {
+    tagHeaderImg.src = window.KVIB_TAG_HEADER_DATA;
+  } else {
+    tagHeaderImg.src = "tag_header_hires.png";
+  }
+
+  // Exact Mizoram KVI Board sample data matching photos
+  const SAMPLE_ITEMS = [
+    { barcode: "mkvib0001", name: "Pure Khadi Cotton Fabric (Mtr)", category: "Khadi", price: 450, stock: 36, printQty: 0, selected: false, format: "tag" },
+    { barcode: "mkvib0002", name: "Handmade Bamboo Fruit Basket", category: "V.I", price: 620, stock: 18, printQty: 0, selected: false, format: "sticker" },
+    { barcode: "mkvib0003", name: "Organic Wild Forest Honey 500g", category: "V.I", price: 380, stock: 50, printQty: 0, selected: false, format: "sticker" },
+    { barcode: "mkvib0004", name: "Pure Mulberry Silk Stole", category: "Khadi", price: 1850, stock: 12, printQty: 0, selected: false, format: "tag" },
+    { barcode: "mkvib0005", name: "Mizoram Handloom Silk Kurta", category: "Khadi", price: 1250, stock: 36, printQty: 36, selected: true, format: "tag" }, // Tag photo sample!
+    { barcode: "mkvib0006", name: "Herbal Turmeric Soap 100g", category: "V.I", price: 95, stock: 45, printQty: 0, selected: false, format: "sticker" },
+    { barcode: "mkvib0007", name: "Cane Handbag with Floral Motif", category: "V.I", price: 850, stock: 20, printQty: 0, selected: false, format: "sticker" },
+    { barcode: "mkvib0008", name: "Pure Bee Wax Block 250g", category: "V.I", price: 240, stock: 25, printQty: 0, selected: false, format: "sticker" },
+    { barcode: "mkvib0009", name: "Traditional Handwoven Puan Chei", category: "Khadi", price: 2950, stock: 8, printQty: 0, selected: false, format: "tag" },
+    { barcode: "mkvib0010", name: "Oil Ghani Machinery Parts", category: "V.I", price: 1800, stock: 10, printQty: 0, selected: false, format: "sticker" },
+    { barcode: "mkvib0011", name: "Printed Receipt Ledger Book", category: "Others", price: 150, stock: 40, printQty: 0, selected: false, format: "sticker" },
+    // Exact items from user's CorelDraw Barcode Sticker screenshot!
+    { barcode: "mkvib0215", name: "Pure Mountain Honey 250ml", category: "V.I", price: 190, stock: 81, printQty: 81, selected: true, format: "sticker" },
+    { barcode: "mkvib0216", name: "Cold-Pressed Mustard Oil 1L", category: "V.I", price: 220, stock: 40, printQty: 0, selected: false, format: "sticker" },
+    { barcode: "mkvib0217", name: "Handmade Herbal Washing Soap", category: "V.I", price: 45, stock: 60, printQty: 0, selected: false, format: "sticker" },
+    { barcode: "mkvib0218", name: "Handcrafted Incense Sticks", category: "V.I", price: 60, stock: 50, printQty: 0, selected: false, format: "sticker" }
+  ];
+
+  function showToast(msg) {
+    const el = document.getElementById("toast-msg");
+    el.textContent = msg;
+    el.style.display = "flex";
+    setTimeout(() => { el.style.display = "none"; }, 3200);
+  }
+
+  // Detect whether category belongs to Khadi
+  function isKhadiCategory(cat) {
+    if (!cat) return false;
+    const s = String(cat).trim().toLowerCase();
+    if (s === "khadi" || s === "cotton" || s === "woolen" || s === "silk") return true;
+    return s.includes("khadi") || s.includes("handloom") || s.includes("puan") || s.includes("textile");
+  }
+
+  // Determine effective print format (Tag vs Sticker)
+  function getEffectiveFormat(item) {
+    const globalModeEl = document.getElementById("global-format-mode");
+    const globalMode = globalModeEl ? globalModeEl.value : "auto";
+    if (globalMode === "all_tags") return "tag";
+    if (globalMode === "all_stickers") return "sticker";
+    if (item.format) return item.format;
+    return isKhadiCategory(item.category) ? "tag" : "sticker";
+  }
+
+  // Layout Configurations for Tag vs Sticker
+  function getTagLayoutConfig() {
+    const sel = document.getElementById("paper-layout-select");
+    const val = sel ? sel.value : "press_12x18";
+    if (val === "press_12x18") {
+      return {
+        paper: "press_12x18",
+        type: "tag",
+        cols: 9,
+        rows: 4,
+        perSheet: 36,
+        className: "layout-12x18-tag",
+        label: "12x18\" Press Sheet (9×4 = 36 Khadi Tags)",
+        pdf: { orientation: "landscape", unit: "mm", format: [457.2, 304.8], itemW: 50.8, itemH: 76.2 }
+      };
+    } else if (val === "a4_land") {
+      return {
+        paper: "a4_land",
+        type: "tag",
+        cols: 6,
+        rows: 3,
+        perSheet: 18,
+        className: "layout-a4-land-tag",
+        label: "A4 Landscape (6×3 = 18 Khadi Tags)",
+        pdf: { orientation: "landscape", unit: "mm", format: "a4", itemW: 49.5, itemH: 70.0 }
+      };
+    } else {
+      return {
+        paper: "a4_port",
+        type: "tag",
+        cols: 4,
+        rows: 4,
+        perSheet: 16,
+        className: "layout-a4-port-tag",
+        label: "A4 Portrait (4×4 = 16 Khadi Tags)",
+        pdf: { orientation: "portrait", unit: "mm", format: "a4", itemW: 52.5, itemH: 74.25 }
+      };
+    }
+  }
+
+  function getStickerLayoutConfig() {
+    const sel = document.getElementById("paper-layout-select");
+    const val = sel ? sel.value : "press_12x18";
+    if (val === "press_12x18") {
+      return {
+        paper: "press_12x18",
+        type: "sticker",
+        cols: 9,
+        rows: 9,
+        perSheet: 81, // Exact match with user's CorelDraw screenshot!
+        className: "layout-12x18-sticker",
+        label: "12x18\" Press Sheet (9×9 = 81 Barcode Stickers)",
+        pdf: { orientation: "landscape", unit: "mm", format: [457.2, 304.8], itemW: 50.8, itemH: 33.86 }
+      };
+    } else if (val === "a4_land") {
+      return {
+        paper: "a4_land",
+        type: "sticker",
+        cols: 6,
+        rows: 6,
+        perSheet: 36,
+        className: "layout-a4-land-sticker",
+        label: "A4 Landscape (6×6 = 36 Barcode Stickers)",
+        pdf: { orientation: "landscape", unit: "mm", format: "a4", itemW: 49.5, itemH: 35.0 }
+      };
+    } else {
+      return {
+        paper: "a4_port",
+        type: "sticker",
+        cols: 4,
+        rows: 8,
+        perSheet: 32,
+        className: "layout-a4-port-sticker",
+        label: "A4 Portrait (4×8 = 32 Barcode Stickers)",
+        pdf: { orientation: "portrait", unit: "mm", format: "a4", itemW: 52.5, itemH: 37.12 }
+      };
+    }
+  }
+
+  // Partition selected items into Tag and Sticker sheets
+  function buildSheetsPlan() {
+    const tagCfg = getTagLayoutConfig();
+    const stickerCfg = getStickerLayoutConfig();
+
+    const tagItems = [];
+    const stickerItems = [];
+
+    dbItems.forEach(it => {
+      const q = parseInt(it.printQty, 10) || 0;
+      if (q > 0) {
+        const fmt = getEffectiveFormat(it);
+        for (let i = 0; i < q; i++) {
+          if (fmt === "tag") {
+            tagItems.push(it);
+          } else {
+            stickerItems.push(it);
+          }
+        }
+      }
+    });
+
+    const sheets = [];
+
+    // Tag sheets
+    const numTagSheets = Math.ceil(tagItems.length / tagCfg.perSheet);
+    for (let s = 0; s < numTagSheets; s++) {
+      sheets.push({
+        type: "tag",
+        typeLabel: "🏷️ Khadi Tag Sheet",
+        config: tagCfg,
+        items: tagItems.slice(s * tagCfg.perSheet, (s + 1) * tagCfg.perSheet),
+        indexInType: s + 1,
+        totalInType: numTagSheets
+      });
+    }
+
+    // Sticker sheets
+    const numStickerSheets = Math.ceil(stickerItems.length / stickerCfg.perSheet);
+    for (let s = 0; s < numStickerSheets; s++) {
+      sheets.push({
+        type: "sticker",
+        typeLabel: "|||| Barcode Sticker Sheet",
+        config: stickerCfg,
+        items: stickerItems.slice(s * stickerCfg.perSheet, (s + 1) * stickerCfg.perSheet),
+        indexInType: s + 1,
+        totalInType: numStickerSheets
+      });
+    }
+
+    return {
+      sheets,
+      tagCount: tagItems.length,
+      stickerCount: stickerItems.length,
+      numTagSheets,
+      numStickerSheets
+    };
+  }
+
+  function updateSummary() {
+    const plan = buildSheetsPlan();
+    const selectedItems = dbItems.filter(it => (parseInt(it.printQty, 10) || 0) > 0);
+    const totalCount = plan.tagCount + plan.stickerCount;
+
+    document.getElementById("sum-items-count").textContent = selectedItems.length;
+    document.getElementById("sum-tags-count").textContent = totalCount;
+    document.getElementById("sum-format-breakdown").textContent = `${plan.tagCount} Khadi Tags · ${plan.stickerCount} Stickers`;
+    document.getElementById("sum-sheets-count").textContent = `${plan.sheets.length} Sheet${plan.sheets.length === 1 ? '' : 's'}`;
+
+    // Subtab counts
+    document.getElementById("count-all-sheets").textContent = plan.sheets.length;
+    document.getElementById("count-tag-sheets").textContent = plan.numTagSheets;
+    document.getElementById("count-sticker-sheets").textContent = plan.numStickerSheets;
+  }
+
+  // Render Inventory Table
+  function renderTable() {
+    const tbody = document.getElementById("inv-table-body");
+    const inputEl = document.getElementById("inv-search-input");
+    const query = inputEl && inputEl.value ? inputEl.value.trim().toLowerCase() : "";
+
+    tbody.innerHTML = "";
+    const filtered = dbItems.filter(it => {
+      // Category pill filter
+      if (activeCatFilter === "khadi" && !isKhadiCategory(it.category)) return false;
+      if (activeCatFilter === "vi") {
+        const cat = (it.category || "").toUpperCase();
+        if (isKhadiCategory(it.category) || cat === "OTHERS") return false;
+      }
+      if (activeCatFilter === "others" && (it.category || "").toUpperCase() !== "OTHERS") return false;
+
+      // Search query
+      if (!query) return true;
+      return (it.name || "").toLowerCase().includes(query) ||
+             (it.barcode || "").toLowerCase().includes(query) ||
+             (it.category || "").toLowerCase().includes(query);
+    });
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:36px; color:var(--text-muted);">No matching items found.</td></tr>`;
+      return;
+    }
+
+    filtered.forEach((it) => {
+      const isSelected = (parseInt(it.printQty, 10) || 0) > 0;
+      const fmt = getEffectiveFormat(it);
+      const isTag = (fmt === "tag");
+
+      const tr = document.createElement("tr");
+      if (isSelected) tr.classList.add("row-selected");
+
+      tr.innerHTML = `
+        <td style="text-align:center;">
+          <input type="checkbox" class="item-checkbox" data-barcode="${it.barcode}" ${isSelected ? 'checked' : ''}>
+        </td>
+        <td class="td-barcode">${it.barcode}</td>
+        <td class="td-name">${it.name}</td>
+        <td class="td-cat">${it.category}</td>
+        <td style="text-align:center;">
+          <button type="button" class="btn-format-toggle ${isTag ? 'format-tag' : 'format-sticker'}" data-barcode="${it.barcode}" title="Click to toggle between Khadi Tag and Barcode Sticker">
+            ${isTag ? '🏷️ Khadi Tag' : '|||| Sticker'}
+          </button>
+        </td>
+        <td class="td-price">₹ ${(Number(it.price) || 0).toLocaleString('en-IN')}</td>
+        <td class="td-stock ${(Number(it.stock)||0) < 5 ? 'low-stock' : ''}">${it.stock || 0}</td>
+        <td style="text-align:center;">
+          <div class="qty-stepper">
+            <button type="button" class="qty-btn btn-qty-minus" data-barcode="${it.barcode}">−</button>
+            <input type="number" min="0" max="999" class="qty-input" data-barcode="${it.barcode}" value="${it.printQty || 0}">
+            <button type="button" class="qty-btn btn-qty-plus" data-barcode="${it.barcode}">+</button>
+          </div>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    updateSummary();
+  }
+
+  // Render a Single Khadi Tag Element (Matching user's photo with Guilloche Rosette Header)
+  function createTagTileElement(barcodeCode) {
+    const tile = document.createElement("div");
+    tile.className = "tag-tile";
+
+    const head = document.createElement("div");
+    head.className = "tag-tile-header";
+    if (window.KVIB_TAG_HEADER_DATA) {
+      head.style.backgroundImage = `url(${window.KVIB_TAG_HEADER_DATA})`;
+    } else {
+      head.style.backgroundImage = `url('tag_header_hires.png')`;
+    }
+
+    const bBox = document.createElement("div");
+    bBox.className = "tag-tile-barcode-box";
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    bBox.appendChild(svg);
+
+    try {
+      if (typeof JsBarcode === "function") {
+        JsBarcode(svg, barcodeCode, {
+          format: "CODE128",
+          width: 1.7,
+          height: 38,
+          displayValue: false,
+          margin: 0,
+          background: "#ffffff",
+          lineColor: "#000000"
+        });
+      }
+    } catch(err) {
+      console.warn("JsBarcode error:", err);
+    }
+
+    const codeLbl = document.createElement("div");
+    codeLbl.className = "tag-barcode-label";
+    codeLbl.textContent = barcodeCode;
+    bBox.appendChild(codeLbl);
+
+    tile.appendChild(head);
+    tile.appendChild(bBox);
+    return tile;
+  }
+
+  // Render a Single Plain Barcode Sticker Tile (Matching user's CorelDraw screenshot!)
+  function createStickerTileElement(barcodeCode) {
+    const tile = document.createElement("div");
+    tile.className = "sticker-tile";
+
+    const bBox = document.createElement("div");
+    bBox.className = "sticker-tile-barcode-box";
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    bBox.appendChild(svg);
+
+    try {
+      if (typeof JsBarcode === "function") {
+        JsBarcode(svg, barcodeCode, {
+          format: "CODE128",
+          width: 1.8,
+          height: 42,
+          displayValue: false,
+          margin: 2,
+          background: "#ffffff",
+          lineColor: "#000000"
+        });
+      }
+    } catch(err) {
+      console.warn("JsBarcode error:", err);
+    }
+
+    const codeLbl = document.createElement("div");
+    codeLbl.className = "sticker-barcode-label";
+    codeLbl.textContent = barcodeCode;
+    tile.appendChild(bBox);
+    tile.appendChild(codeLbl);
+    return tile;
+  }
+
+  // Render Live Virtual Sheet
+  function renderSheetPreview() {
+    const stage = document.getElementById("virtual-sheet-stage");
+    stage.innerHTML = "";
+
+    const plan = buildSheetsPlan();
+    let displaySheets = plan.sheets;
+
+    if (previewFilterType === "tag") {
+      displaySheets = plan.sheets.filter(s => s.type === "tag");
+    } else if (previewFilterType === "sticker") {
+      displaySheets = plan.sheets.filter(s => s.type === "sticker");
+    }
+
+    if (displaySheets.length === 0) {
+      stage.innerHTML = `
+        <div style="text-align:center; padding:60px 20px; color:var(--text-muted);">
+          <div style="font-size:36px; margin-bottom:12px;">📄</div>
+          <div style="font-size:16px; font-weight:700; color:#e2e8f0; margin-bottom:6px;">No Sheets to Preview</div>
+          <p style="font-size:13px; color:var(--text-dim);">Khawngaihin "1. Select Items &amp; Qty" ah print tur item thlang rawh le.</p>
+        </div>`;
+      document.getElementById("sheet-page-indicator").textContent = `Sheet 0 of 0`;
+      document.getElementById("prev-sheet-btn").disabled = true;
+      document.getElementById("next-sheet-btn").disabled = true;
+      document.getElementById("preview-grid-info").textContent = "No sheets active";
+      return;
+    }
+
+    if (currentSheetIndex >= displaySheets.length) currentSheetIndex = displaySheets.length - 1;
+    if (currentSheetIndex < 0) currentSheetIndex = 0;
+
+    const currentSheet = displaySheets[currentSheetIndex];
+    const totalSheets = displaySheets.length;
+
+    document.getElementById("sheet-page-indicator").innerHTML = `Sheet <strong>${currentSheetIndex + 1}</strong> of <strong>${totalSheets}</strong> <span style="margin-left:8px; font-weight:600; color:#38bdf8;">(${currentSheet.typeLabel} ${currentSheet.indexInType}/${currentSheet.totalInType})</span>`;
+    document.getElementById("prev-sheet-btn").disabled = (currentSheetIndex === 0);
+    document.getElementById("next-sheet-btn").disabled = (currentSheetIndex >= totalSheets - 1);
+    document.getElementById("preview-grid-info").innerHTML = `Format: <strong>${currentSheet.config.label}</strong>`;
+
+    const sheetDiv = document.createElement("div");
+    sheetDiv.className = `virtual-sheet ${currentSheet.config.className}`;
+
+    const cfg = currentSheet.config;
+    const pageItems = currentSheet.items;
+
+    for (let i = 0; i < cfg.perSheet; i++) {
+      if (i < pageItems.length) {
+        if (currentSheet.type === "tag") {
+          sheetDiv.appendChild(createTagTileElement(pageItems[i].barcode));
+        } else {
+          sheetDiv.appendChild(createStickerTileElement(pageItems[i].barcode));
+        }
+      } else {
+        // Blank slot with cutting guide
+        const emptyTile = document.createElement("div");
+        emptyTile.className = (currentSheet.type === "tag") ? "tag-tile" : "sticker-tile";
+        emptyTile.style.background = "#fafafa";
+        emptyTile.style.border = "1px dashed #e2e8f0";
+        sheetDiv.appendChild(emptyTile);
+      }
+    }
+
+    stage.appendChild(sheetDiv);
+  }
+
+  // Render all printable sheets into DOM for Browser window.print()
+  function preparePrintSheetsDOM() {
+    const stage = document.getElementById("virtual-sheet-stage");
+    stage.innerHTML = "";
+
+    const plan = buildSheetsPlan();
+    let printSheets = plan.sheets;
+
+    if (previewFilterType === "tag") {
+      printSheets = plan.sheets.filter(s => s.type === "tag");
+    } else if (previewFilterType === "sticker") {
+      printSheets = plan.sheets.filter(s => s.type === "sticker");
+    }
+
+    if (printSheets.length === 0) return;
+
+    printSheets.forEach(sheetObj => {
+      const sheetDiv = document.createElement("div");
+      sheetDiv.className = `virtual-sheet ${sheetObj.config.className}`;
+
+      const cfg = sheetObj.config;
+      const pageItems = sheetObj.items;
+
+      for (let i = 0; i < cfg.perSheet; i++) {
+        if (i < pageItems.length) {
+          if (sheetObj.type === "tag") {
+            sheetDiv.appendChild(createTagTileElement(pageItems[i].barcode));
+          } else {
+            sheetDiv.appendChild(createStickerTileElement(pageItems[i].barcode));
+          }
+        } else {
+          const emptyTile = document.createElement("div");
+          emptyTile.className = (sheetObj.type === "tag") ? "tag-tile" : "sticker-tile";
+          emptyTile.style.background = "#ffffff";
+          sheetDiv.appendChild(emptyTile);
+        }
+      }
+      stage.appendChild(sheetDiv);
+    });
+  }
+
+  // Generate Khadi Tag image on canvas for PDF export
+  function drawTagToCanvas(targetCanvas, barcodeCode) {
+    const w = 400;
+    const h = 600;
+    targetCanvas.width = w;
+    targetCanvas.height = h;
+    const ctx = targetCanvas.getContext("2d");
+
+    // 1. Top Emblem (approx 57% of height)
+    const headerH = Math.round(h * 0.57);
+    if (tagHeaderImg.complete && tagHeaderImg.naturalWidth > 0) {
+      ctx.drawImage(tagHeaderImg, 0, 0, w, headerH);
+    } else {
+      ctx.fillStyle = "#2b1309";
+      ctx.fillRect(0, 0, w, headerH);
+    }
+
+    // 2. Bottom White Area
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, headerH, w, h - headerH);
+
+    // 3. Render barcode onto temporary canvas
+    const bcCanvas = document.createElement("canvas");
+    try {
+      if (typeof JsBarcode === "function") {
+        JsBarcode(bcCanvas, barcodeCode, {
+          format: "CODE128",
+          width: 2.2,
+          height: 68,
+          displayValue: false,
+          margin: 4,
+          background: "#ffffff",
+          lineColor: "#000000"
+        });
+      }
+    } catch(e) {}
+
+    const bcW = Math.min(w - 24, bcCanvas.width);
+    const bcH = Math.min(h - headerH - 30, bcCanvas.height);
+    const bcX = (w - bcW) / 2;
+    const bcY = headerH + 8;
+    ctx.drawImage(bcCanvas, bcX, bcY, bcW, bcH);
+
+    // 4. Barcode Text Label Centered Below
+    ctx.fillStyle = "#0f172a";
+    ctx.font = "bold 20px 'JetBrains Mono', monospace";
+    ctx.textAlign = "center";
+    ctx.fillText(barcodeCode, w / 2, headerH + bcH + 28);
+
+    // 5. Delicate outer cut border
+    ctx.strokeStyle = "#cbd5e1";
+    ctx.lineWidth = 1;
+    ctx.strokeRect(0, 0, w, h);
+  }
+
+  // Generate Plain Barcode Sticker image on canvas for PDF export
+  function drawStickerToCanvas(targetCanvas, barcodeCode) {
+    const w = 400;
+    const h = 266; // 1.5 ratio matching 50.8mm x 33.86mm
+    targetCanvas.width = w;
+    targetCanvas.height = h;
+    const ctx = targetCanvas.getContext("2d");
+
+    // 1. White Background
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, w, h);
+
+    // 2. Render barcode onto temporary canvas
+    const bcCanvas = document.createElement("canvas");
+    try {
+      if (typeof JsBarcode === "function") {
+        JsBarcode(bcCanvas, barcodeCode, {
+          format: "CODE128",
+          width: 2.2,
+          height: 110,
+          displayValue: false,
+          margin: 4,
+          background: "#ffffff",
+          lineColor: "#000000"
+        });
+      }
+    } catch(e) {}
+
+    const bcW = Math.min(w - 20, bcCanvas.width);
+    const bcH = Math.min(h - 55, bcCanvas.height);
+    const bcX = (w - bcW) / 2;
+    const bcY = 12;
+    ctx.drawImage(bcCanvas, bcX, bcY, bcW, bcH);
+
+    // 3. Barcode Text Label Centered Below
+    ctx.fillStyle = "#0f172a";
+    ctx.font = "bold 24px 'JetBrains Mono', monospace";
+    ctx.textAlign = "center";
+    ctx.fillText(barcodeCode, w / 2, bcY + bcH + 34);
+
+    // 4. Dashed cutting border matching CorelDraw screenshot
+    ctx.strokeStyle = "#cbd5e1";
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 4]);
+    ctx.strokeRect(0.5, 0.5, w - 1, h - 1);
+    ctx.setLineDash([]);
+  }
+
+  // High-Resolution PDF Export via jsPDF
+  async function generatePdf() {
+    const plan = buildSheetsPlan();
+    let exportSheets = plan.sheets;
+
+    if (previewFilterType === "tag") {
+      exportSheets = plan.sheets.filter(s => s.type === "tag");
+    } else if (previewFilterType === "sticker") {
+      exportSheets = plan.sheets.filter(s => s.type === "sticker");
+    }
+
+    if (exportSheets.length === 0) {
+      alert("Khawngaihin tag emaw barcode sticker emaw print tur thlang rawh le.");
+      return;
+    }
+
+    if (!window.jspdf || !window.jspdf.jsPDF) {
+      alert("PDF library loading failed. Please check internet connection or print directly.");
+      return;
+    }
+
+    const firstCfg = exportSheets[0].config;
+    showToast(`Generating ${exportSheets.length} sheet(s) PDF (${plan.tagCount} Tags, ${plan.stickerCount} Stickers)...`);
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF(firstCfg.pdf);
+
+    const tempCanvas = document.createElement("canvas");
+
+    for (let s = 0; s < exportSheets.length; s++) {
+      const sheetObj = exportSheets[s];
+      const cfg = sheetObj.config;
+
+      if (s > 0) {
+        if (Array.isArray(cfg.pdf.format)) {
+          doc.addPage(cfg.pdf.format, cfg.pdf.orientation);
+        } else {
+          doc.addPage(cfg.pdf.format, cfg.pdf.orientation);
+        }
+      }
+
+      const itemW = cfg.pdf.itemW;
+      const itemH = cfg.pdf.itemH;
+      const cols = cfg.cols;
+      const pageItems = sheetObj.items;
+
+      for (let i = 0; i < pageItems.length; i++) {
+        const c = i % cols;
+        const r = Math.floor(i / cols);
+        const x = c * itemW;
+        const y = r * itemH;
+
+        if (sheetObj.type === "tag") {
+          drawTagToCanvas(tempCanvas, pageItems[i].barcode);
+        } else {
+          drawStickerToCanvas(tempCanvas, pageItems[i].barcode);
+        }
+
+        const imgData = tempCanvas.toDataURL("image/jpeg", 0.96);
+        doc.addImage(imgData, "JPEG", x, y, itemW, itemH);
+      }
+    }
+
+    const filename = `KVIB_Barcode_Studio_${firstCfg.paper}_${exportSheets.length}sheets.pdf`;
+    doc.save(filename);
+    showToast(`✅ PDF downloaded: ${filename}`);
+  }
+
+  // Wire Tab Switches
+  document.getElementById("tab-btn-chooser").addEventListener("click", () => {
+    activeTab = "chooser";
+    document.getElementById("tab-btn-chooser").classList.add("active");
+    document.getElementById("tab-btn-preview").classList.remove("active");
+    document.getElementById("view-chooser").classList.add("active");
+    document.getElementById("view-preview").classList.remove("active");
+  });
+
+  document.getElementById("tab-btn-preview").addEventListener("click", () => {
+    activeTab = "preview";
+    document.getElementById("tab-btn-preview").classList.add("active");
+    document.getElementById("tab-btn-chooser").classList.remove("active");
+    document.getElementById("view-preview").classList.add("active");
+    document.getElementById("view-chooser").classList.remove("active");
+    renderSheetPreview();
+  });
+
+  // Preview Subtab Filter (All / Tag / Sticker)
+  document.getElementById("preview-subtabs").addEventListener("click", e => {
+    const btn = e.target.closest(".preview-subtab-btn");
+    if (!btn) return;
+    document.querySelectorAll(".preview-subtab-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    previewFilterType = btn.dataset.viewType;
+    currentSheetIndex = 0;
+    renderSheetPreview();
+  });
+
+  // Pagination
+  document.getElementById("prev-sheet-btn").addEventListener("click", () => {
+    currentSheetIndex--;
+    renderSheetPreview();
+  });
+  document.getElementById("next-sheet-btn").addEventListener("click", () => {
+    currentSheetIndex++;
+    renderSheetPreview();
+  });
+
+  // Format Rule & Paper Layout Selectors
+  document.getElementById("paper-layout-select").addEventListener("change", () => {
+    updateSummary();
+    if (activeTab === "preview") renderSheetPreview();
+  });
+
+  document.getElementById("global-format-mode").addEventListener("change", () => {
+    renderTable();
+    if (activeTab === "preview") renderSheetPreview();
+    showToast("Print format rule updated.");
+  });
+
+  // Category Filter Pills
+  document.querySelectorAll(".cat-pill").forEach(pill => {
+    pill.addEventListener("click", () => {
+      document.querySelectorAll(".cat-pill").forEach(p => p.classList.remove("active"));
+      pill.classList.add("active");
+      activeCatFilter = pill.dataset.cat;
+      renderTable();
+    });
+  });
+
+  // Table Interaction
+  document.getElementById("inv-table-body").addEventListener("click", e => {
+    // Format toggle button (Tag vs Sticker)
+    const formatBtn = e.target.closest(".btn-format-toggle");
+    if (formatBtn) {
+      const code = formatBtn.dataset.barcode;
+      const it = dbItems.find(x => x.barcode === code);
+      if (it) {
+        const currentFmt = getEffectiveFormat(it);
+        it.format = (currentFmt === "tag") ? "sticker" : "tag";
+        // If global mode was forced, revert back to auto so custom toggle holds
+        const globalModeSel = document.getElementById("global-format-mode");
+        if (globalModeSel.value !== "auto") {
+          globalModeSel.value = "auto";
+        }
+        renderTable();
+        showToast(`${it.barcode} switched to ${it.format === 'tag' ? '🏷️ Khadi Tag' : '|||| Barcode Sticker'}`);
+      }
+      return;
+    }
+
+    const minusBtn = e.target.closest(".btn-qty-minus");
+    if (minusBtn) {
+      const code = minusBtn.dataset.barcode;
+      const it = dbItems.find(x => x.barcode === code);
+      if (it) {
+        it.printQty = Math.max(0, (parseInt(it.printQty, 10) || 0) - 1);
+        it.selected = it.printQty > 0;
+        renderTable();
+      }
+      return;
+    }
+
+    const plusBtn = e.target.closest(".btn-qty-plus");
+    if (plusBtn) {
+      const code = plusBtn.dataset.barcode;
+      const it = dbItems.find(x => x.barcode === code);
+      if (it) {
+        it.printQty = (parseInt(it.printQty, 10) || 0) + 1;
+        it.selected = true;
+        renderTable();
+      }
+      return;
+    }
+
+    const chk = e.target.closest(".item-checkbox");
+    if (chk) {
+      const code = chk.dataset.barcode;
+      const it = dbItems.find(x => x.barcode === code);
+      if (it) {
+        it.selected = chk.checked;
+        it.printQty = chk.checked ? Math.max(1, parseInt(it.printQty, 10) || Number(it.stock) || 1) : 0;
+        renderTable();
+      }
+    }
+  });
+
+  document.getElementById("inv-table-body").addEventListener("change", e => {
+    const input = e.target.closest(".qty-input");
+    if (input) {
+      const code = input.dataset.barcode;
+      const it = dbItems.find(x => x.barcode === code);
+      if (it) {
+        const val = Math.max(0, parseInt(input.value, 10) || 0);
+        it.printQty = val;
+        it.selected = val > 0;
+        renderTable();
+      }
+    }
+  });
+
+  document.getElementById("check-all-items").addEventListener("change", e => {
+    const val = e.target.checked;
+    dbItems.forEach(it => {
+      it.selected = val;
+      if (val && it.printQty === 0) it.printQty = 1;
+      if (!val) it.printQty = 0;
+    });
+    renderTable();
+  });
+
+  // Presets
+  document.getElementById("preset-stock").addEventListener("click", () => {
+    dbItems.forEach(it => {
+      const st = Math.max(0, Number(it.stock) || 0);
+      it.printQty = st;
+      it.selected = st > 0;
+    });
+    renderTable();
+    showToast("Print quantities set to live stock levels.");
+  });
+
+  document.getElementById("preset-1").addEventListener("click", () => {
+    dbItems.forEach(it => { it.printQty = 1; it.selected = true; });
+    renderTable();
+  });
+
+  document.getElementById("preset-2").addEventListener("click", () => {
+    dbItems.forEach(it => { it.printQty = 2; it.selected = true; });
+    renderTable();
+  });
+
+  document.getElementById("preset-5").addEventListener("click", () => {
+    dbItems.forEach(it => { it.printQty = 5; it.selected = true; });
+    renderTable();
+  });
+
+  document.getElementById("preset-clear").addEventListener("click", () => {
+    dbItems.forEach(it => { it.printQty = 0; it.selected = false; });
+    renderTable();
+  });
+
+  document.getElementById("inv-search-input").addEventListener("input", renderTable);
+
+  // Actions
+  document.getElementById("btn-download-pdf").addEventListener("click", generatePdf);
+
+  document.getElementById("btn-print-sheet").addEventListener("click", () => {
+    const plan = buildSheetsPlan();
+    if (plan.sheets.length === 0) {
+      alert("Khawngaihin tag emaw sticker print tur item pakhat tal thlang rawh le.");
+      return;
+    }
+    preparePrintSheetsDOM();
+    document.getElementById("view-preview").classList.add("print-panel-active");
+    window.print();
+    setTimeout(renderSheetPreview, 500);
+  });
+
+  // Firebase Realtime DB Sync & Token Management
+  async function getValidToken() {
+    const rt = localStorage.getItem("kvib_monitor_refresh");
+    if (!rt) {
+      window.location.replace("index.html");
+      return null;
+    }
+    try {
+      const res = await fetch(`https://securetoken.googleapis.com/v1/token?key=${CONFIG.FIREBASE_API_KEY}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `grant_type=refresh_token&refresh_token=${encodeURIComponent(rt)}`
+      });
+      const data = await res.json();
+      if (res.ok && data.id_token) {
+        localStorage.setItem("kvib_monitor_refresh", data.refresh_token);
+        return data.id_token;
+      }
+      if (data && data.error && (data.error.message === "TOKEN_EXPIRED" || data.error.message === "USER_DISABLED" || data.error.message === "USER_NOT_FOUND")) {
+        localStorage.removeItem("kvib_monitor_refresh");
+        localStorage.removeItem("kvib_monitor_email");
+        window.location.replace("index.html");
+        return null;
+      }
+    } catch(e) {
+      // Network error or offline: keep session alive so offline mode works
+      console.warn("Token refresh network issue:", e);
+    }
+    return null;
+  }
+
+  async function loadFirebaseItems() {
+    const statusPill = document.getElementById("db-status-pill");
+    const statusText = document.getElementById("db-status-text");
+
+    statusText.textContent = "Connecting to Firebase…";
+
+    try {
+      const token = await getValidToken();
+      if (!token) {
+        statusPill.classList.add("disconnected");
+        statusText.textContent = "Offline Mode (Local)";
+        if (dbItems.length === 0) {
+          dbItems = JSON.parse(JSON.stringify(SAMPLE_ITEMS));
+          renderTable();
+        }
+        return;
+      }
+
+      const res = await fetch(`${CONFIG.FIREBASE_URL}/items.json?auth=${token}`);
+      if (!res.ok) throw new Error("Database request failed");
+      const data = await res.json();
+
+      const itemsList = [];
+      if (Array.isArray(data)) {
+        data.forEach((it, idx) => {
+          if (it) {
+            const cat = it.category || "General";
+            itemsList.push({
+              barcode: String(it.barcode || it.item_number || `mkvib${String(idx+1).padStart(4,'0')}`).trim(),
+              name: it.name || it.item_name || "Item",
+              category: cat,
+              price: it.selling_price || it.price || 0,
+              stock: it.current_stock || it.stock || 0,
+              printQty: 0,
+              selected: false,
+              format: isKhadiCategory(cat) ? "tag" : "sticker"
+            });
+          }
+        });
+      } else if (typeof data === "object" && data !== null) {
+        for (const k in data) {
+          const it = data[k];
+          if (it) {
+            const cat = it.category || "General";
+            itemsList.push({
+              barcode: String(it.barcode || it.item_number || k).trim(),
+              name: it.name || it.item_name || "Item",
+              category: cat,
+              price: it.selling_price || it.price || 0,
+              stock: it.current_stock || it.stock || 0,
+              printQty: 0,
+              selected: false,
+              format: isKhadiCategory(cat) ? "tag" : "sticker"
+            });
+          }
+        }
+      }
+
+      if (itemsList.length > 0) {
+        // Retain any existing print quantities if re-fetching
+        itemsList.forEach(newItem => {
+          const prev = dbItems.find(x => x.barcode === newItem.barcode);
+          if (prev) {
+            newItem.printQty = prev.printQty;
+            newItem.selected = prev.selected;
+            if (prev.format) newItem.format = prev.format;
+          }
+        });
+        dbItems = itemsList;
+        statusPill.classList.remove("disconnected");
+        statusText.textContent = `Firebase Connected (${dbItems.length} items)`;
+        renderTable();
+        showToast(`Loaded ${dbItems.length} products from Firebase.`);
+      } else {
+        throw new Error("No items in cloud");
+      }
+    } catch (err) {
+      console.warn("Firebase fetch failed:", err);
+      statusPill.classList.add("disconnected");
+      statusText.textContent = "Firebase Offline (Sample Data)";
+      if (dbItems.length === 0) {
+        dbItems = JSON.parse(JSON.stringify(SAMPLE_ITEMS));
+        renderTable();
+      }
+    }
+  }
+
+  document.getElementById("btn-refresh-cloud").addEventListener("click", () => {
+    loadFirebaseItems();
+  });
+
+  // Sign out button
+  const signOutBtn = document.getElementById("btn-studio-signout");
+  if (signOutBtn) {
+    signOutBtn.addEventListener("click", () => {
+      localStorage.removeItem("kvib_monitor_refresh");
+      localStorage.removeItem("kvib_monitor_email");
+      window.location.replace("index.html");
+    });
+  }
+
+  // Display authorized user email
+  function initUserDisplay() {
+    const email = localStorage.getItem("kvib_monitor_email") || "Staff Member";
+    const emailEl = document.getElementById("user-email-text");
+    if (emailEl) emailEl.textContent = email;
+  }
+
+  // Boot
+  async function boot() {
+    initUserDisplay();
+    try {
+      const res = await fetch("config.json");
+      CONFIG = await res.json();
+    } catch(e) {}
+    await loadFirebaseItems();
+  }
+
+  boot();
+})();
+</script>
+</body>
+</html>

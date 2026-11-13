@@ -64,59 +64,15 @@ a{ color: inherit; }
 .credit{ color: var(--green); }
 .debit{ color: var(--red); }
 
-/* ============ LOGIN ============ */
-#login-screen{
-  min-height:100vh;
-  display:flex; align-items:center; justify-content:center;
-  background:
-    radial-gradient(ellipse 60% 45% at 18% 15%, rgba(124,111,240,.16), transparent 60%),
-    radial-gradient(ellipse 55% 45% at 85% 85%, rgba(240,169,59,.10), transparent 60%),
-    var(--bg);
-  padding:24px;
-}
-.login-card{
-  width:100%; max-width:400px;
-  background: var(--paper);
-  border:1px solid var(--border);
-  border-radius: 28px;
-  padding:44px 38px 34px;
-  position:relative;
-  box-shadow: var(--shadow);
-}
-.login-brand{ display:flex; align-items:center; gap:13px; margin-bottom:28px; }
-.login-brand img{ width:46px; height:46px; border-radius:16px; object-fit:cover; border:1px solid var(--border); padding:2px; background:var(--paper); }
-.login-brand .name{ font-family: var(--font-display); font-weight:800; font-size:16.5px; color:var(--ink); line-height:1.25; }
-.login-brand .sub{ font-size:11.5px; color: var(--ink-soft); letter-spacing:.02em; }
-.login-card h1{
-  font-family: var(--font-display); font-weight:800; font-size:28px;
-  margin-bottom:6px; color: var(--ink); letter-spacing:-.02em;
-}
-.login-card p.hint{ color: var(--ink-soft); font-size:13px; margin-bottom:26px; max-width:34ch; }
-.field{ margin-bottom:16px; }
-.field label{ display:block; font-family: var(--font-display); font-weight:600; font-size:12.5px; color: var(--ink-soft); margin-bottom:7px; }
-.field input{
-  width:100%; padding:13px 15px; border:1px solid var(--border); border-radius:14px;
-  background: var(--khadi); font-size:14.5px; color:var(--ink); transition: border-color .15s, background .15s;
-}
-.field input:focus{ outline:none; border-color: var(--indigo); background: var(--paper); box-shadow: 0 0 0 4px var(--indigo-soft); }
 .btn{
   border:none; border-radius:14px; padding:11px 18px; font-size:14px; font-weight:700;
   display:inline-flex; align-items:center; justify-content:center; gap:8px;
   transition: transform .08s ease, box-shadow .15s, background .15s;
 }
 .btn:active{ transform: translateY(1px); }
-.btn-primary{ background: linear-gradient(135deg, var(--indigo), var(--indigo-deep)); color:#fff; width:100%; padding:14px 18px; margin-top:14px; letter-spacing:.01em; box-shadow: 0 14px 26px -12px rgba(76,63,214,.55); }
-.btn-primary:hover{ background: linear-gradient(135deg, var(--indigo-mid), var(--indigo)); }
-.btn-primary:disabled{ opacity:.6; cursor:default; }
 .btn-ghost{ background: var(--khadi); color: var(--ink-soft); border:1px solid var(--border); }
 .btn-ghost:hover{ background: var(--border); color:var(--ink); }
 .btn-sm{ padding:8px 14px; font-size:12.5px; border-radius:12px; }
-.login-error{
-  background: var(--red-soft); color:#B3261E; border:1px solid #F6C7C4; border-radius:12px;
-  padding:11px 13px; font-size:12.5px; margin-bottom:14px; display:none; line-height:1.45;
-}
-.login-error.show{ display:block; }
-.login-foot{ margin-top:26px; text-align:center; font-size:11px; color: var(--ink-faint); letter-spacing:.02em; }
 .spinner{
   width:15px; height:15px; border-radius:50%;
   border:2px solid rgba(255,255,255,.35); border-top-color:#fff;
@@ -389,26 +345,684 @@ button:focus-visible,[data-goto]:focus-visible{outline:3px solid #19a7a2;outline
 button{transition:transform .2s,box-shadow .2s,background .2s!important}
 button:disabled{transform:none!important}
 ::selection{background:#9de6d9;color:#123c3c}
-#login-screen{position:relative;isolation:isolate;gap:clamp(40px,8vw,140px);padding:64px clamp(24px,6vw,100px);overflow:hidden;background:radial-gradient(ellipse at 18% 42%,#155052 0,transparent 48%),radial-gradient(ellipse at 80% 100%,#17314f 0,transparent 50%),#091925;color:#fff}
-#login-screen::before{content:"";position:absolute;inset:0;z-index:-1;background-image:linear-gradient(#b9efea05 1px,transparent 1px),linear-gradient(90deg,#b9efea05 1px,transparent 1px);background-size:64px 64px;mask-image:linear-gradient(#000,transparent)}
-.login-intro{width:520px;max-width:48%;position:relative;align-self:center}
-.intro-kicker{display:flex;align-items:center;gap:10px;text-transform:uppercase;letter-spacing:.2em;font-size:12px;font-weight:700;color:#a1d9cf;margin-bottom:26px}
-.intro-kicker::before{content:"";width:24px;height:2px;background:#6be2c8;box-shadow:0 0 14px #67e6c8}
-.login-intro h2{font-size:clamp(40px,4.3vw,66px);font-weight:600;line-height:1.09;letter-spacing:-.055em;max-width:10ch;position:relative;z-index:2}
-.login-intro h2 span{display:block;background:linear-gradient(100deg,#b9f8e0,#54baaf);background-clip:text;-webkit-background-clip:text;color:transparent}
-.intro-description{max-width:34ch;font-size:16px;line-height:1.8;color:#a8becb;margin-top:22px;position:relative;z-index:2}
-.prism-art{height:240px;position:relative;perspective:800px;margin-top:18px;pointer-events:none}
-.prism-art::after{content:"";position:absolute;width:290px;height:30px;left:50px;bottom:12px;border-radius:50%;background:#0007;filter:blur(16px)}
-.prism-ring{position:absolute;left:56px;top:27px;width:220px;height:220px;border-radius:50%;border:32px solid #83ead1;transform:rotateX(58deg) rotateY(-22deg) rotateZ(-28deg);background:transparent;box-shadow:0 3px 1px #e5fff1 inset,0 -10px 12px #146d70 inset,0 3px 0 #77cabc,0 7px 0 #3d9d98,0 12px 0 #287f80,0 18px 0 #1a5e67,0 26px 20px #0006,0 -2px 10px #bcffe955;z-index:1}
-.prism-ring.second{width:152px;height:152px;border-width:22px;left:190px;top:26px;transform:rotateX(58deg) rotateY(20deg) rotateZ(-28deg);border-color:#adc8f5;box-shadow:0 3px 2px #f4f7ff inset,0 -8px 12px #526ca4 inset,0 4px 0 #89a7d3,0 9px 0 #617ca9,0 15px 0 #334d79,0 25px 24px #0006;z-index:2}
-.intro-footer{font-size:12px;color:#86a1b2;letter-spacing:.08em;margin-top:8px}
-.login-card{max-width:420px;flex-shrink:0;padding:38px;background:linear-gradient(145deg,#fffffffa,#edf6f7f5);border:1px solid #fff9;border-radius:28px;color:var(--ink);box-shadow:0 35px 70px #0005,0 2px 2px #fff inset,0 -4px 0 #bdced4,0 -5px 0 #fff8;backdrop-filter:blur(24px)}
-.login-brand{margin-bottom:36px;gap:12px}.login-brand img{width:48px;height:48px;border-radius:14px;box-shadow:0 4px 10px #17395216}.login-brand .name{font-size:16px}.login-brand .sub{font-size:12px;margin-top:3px}
-.login-card h1{font-size:30px;letter-spacing:-.04em;font-weight:700}.login-card p.hint{font-size:14px;line-height:1.7;margin:10px 0 26px;max-width:none}
-.field{margin-bottom:20px}.field label{font-size:14px;color:#344d60}.field input{background:#e8eff3;border:1px solid #d3dfe6;box-shadow:inset 0 2px 4px #16395109,0 1px 0 #fff;min-height:50px;font-size:16px;border-radius:12px}
-.btn-primary{background:linear-gradient(180deg,#229e99 0%,#087b7a 52%,#056364 100%);border:1px solid #047779;box-shadow:inset 0 1px 0 #a5fff680,0 4px 0 #044b51,0 12px 22px #087b7a30;min-height:50px;border-radius:12px;margin-top:10px}
-.btn-primary:hover{background:linear-gradient(180deg,#31b2a8,#087879);transform:translateY(-2px);box-shadow:inset 0 1px 0 #cafff480,0 6px 0 #044b51,0 16px 28px #087b7a40}
-.btn-primary:active{transform:translateY(2px);box-shadow:0 1px 0 #044b51}.login-foot{font-size:12px;line-height:1.7;margin-top:28px;color:#63788a}
+/* ============ REDESIGNED MODERN LOGIN SCREEN ============ */
+#login-screen{
+  min-height: 100vh;
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  background: #080d16;
+  color: #fff;
+  overflow-x: hidden;
+  padding: 0;
+}
+#login-screen::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 65% 55% at 15% 15%, rgba(13, 148, 136, 0.22), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 85% 85%, rgba(16, 185, 129, 0.16), transparent 60%),
+    radial-gradient(ellipse 40% 40% at 75% 20%, rgba(56, 189, 248, 0.14), transparent 50%),
+    #080d16;
+}
+#login-screen::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, #000 30%, transparent 85%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, #000 30%, transparent 85%);
+  pointer-events: none;
+}
+
+/* Header bar on login */
+.login-topbar{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px clamp(20px, 5vw, 60px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(8, 13, 22, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  position: relative;
+  z-index: 10;
+}
+.login-topbar-brand{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.login-topbar-brand img{
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: #fff;
+  padding: 2px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+.login-topbar-title{
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+.login-topbar-sub{
+  font-size: 11px;
+  color: #94a3b8;
+  letter-spacing: 0.02em;
+}
+
+.login-topbar-right{
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.cloud-status-badge{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(16, 185, 129, 0.12);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+.cloud-dot{
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+  animation: pulseDot 2s infinite ease-in-out;
+}
+@keyframes pulseDot{
+  0%, 100%{ opacity: 1; transform: scale(1); }
+  50%{ opacity: 0.5; transform: scale(0.85); }
+}
+
+/* Barcode Top Navigation Pill */
+.nav-barcode-btn{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(20, 184, 166, 0.12);
+  border: 1px solid rgba(20, 184, 166, 0.35);
+  border-radius: 12px;
+  color: #2dd4bf;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all .2s ease;
+  box-shadow: 0 4px 14px -4px rgba(13, 148, 136, 0.3);
+}
+.nav-barcode-btn:hover{
+  background: rgba(20, 184, 166, 0.22);
+  border-color: rgba(45, 212, 191, 0.6);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px -4px rgba(13, 148, 136, 0.5);
+}
+.nav-barcode-btn .free-tag{
+  background: rgba(16, 185, 129, 0.25);
+  color: #a7f3d0;
+  padding: 1px 6px;
+  border-radius: 6px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* Main Login Wrap */
+.login-body-wrapper{
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px clamp(20px, 5vw, 60px);
+  width: 100%;
+}
+.login-content-grid{
+  width: 100%;
+  max-width: 1140px;
+  display: grid;
+  grid-template-columns: 1.15fr 0.95fr;
+  gap: clamp(36px, 5vw, 72px);
+  align-items: center;
+}
+
+/* Left Hero Showcase */
+.login-showcase{
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.showcase-eyebrow{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(13, 148, 136, 0.15);
+  border: 1px solid rgba(20, 184, 166, 0.3);
+  padding: 5px 14px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #2dd4bf;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  width: fit-content;
+}
+.showcase-title{
+  font-size: clamp(32px, 3.6vw, 50px);
+  font-weight: 800;
+  line-height: 1.14;
+  letter-spacing: -0.04em;
+  color: #ffffff;
+}
+.showcase-title span{
+  background: linear-gradient(120deg, #5eead4 0%, #14b8a6 50%, #34d399 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.showcase-desc{
+  font-size: 15.5px;
+  line-height: 1.7;
+  color: #94a3b8;
+  max-width: 48ch;
+}
+
+/* Feature List */
+.showcase-features{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 4px;
+}
+.showcase-feat-item{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13.5px;
+  color: #cbd5e1;
+}
+.feat-bullet{
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: rgba(13, 148, 136, 0.15);
+  border: 1px solid rgba(20, 184, 166, 0.3);
+  color: #2dd4bf;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+/* Dedicated Barcode Highlight Card on Left */
+.barcode-highlight-card{
+  margin-top: 8px;
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.12), rgba(15, 23, 42, 0.8));
+  border: 1px solid rgba(45, 212, 191, 0.3);
+  border-radius: 18px;
+  padding: 20px 22px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  box-shadow: 0 16px 36px -12px rgba(0,0,0,0.4);
+  transition: all .2s ease;
+}
+.barcode-highlight-card:hover{
+  border-color: rgba(45, 212, 191, 0.55);
+  box-shadow: 0 20px 42px -12px rgba(13, 148, 136, 0.25);
+  transform: translateY(-2px);
+}
+.bhc-icon-box{
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #0d9488, #059669);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 8px 16px -4px rgba(13, 148, 136, 0.5);
+}
+.bhc-content{
+  flex: 1;
+}
+.bhc-title-row{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 3px;
+}
+.bhc-title{
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+}
+.bhc-badge{
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  padding: 1px 7px;
+  border-radius: 6px;
+  font-size: 10.5px;
+  font-weight: 700;
+}
+.bhc-desc{
+  font-size: 12.5px;
+  color: #94a3b8;
+  line-height: 1.45;
+}
+.bhc-btn{
+  padding: 9px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  transition: all .15s ease;
+}
+.bhc-btn:hover{
+  background: #2dd4bf;
+  color: #042f2e;
+  border-color: #2dd4bf;
+}
+
+/* Right: Login Card */
+.login-card{
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 26px;
+  padding: 36px 34px 30px;
+  box-shadow: 
+    0 30px 65px -15px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.3) inset;
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  color: #0f172a;
+  position: relative;
+}
+
+.login-card-brand{
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: 22px;
+}
+.login-card-brand img{
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+  background: #fff;
+  padding: 2px;
+  border: 1px solid #e2e8f0;
+}
+.login-card-brand .brand-name{
+  font-size: 15.5px;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.25;
+}
+.login-card-brand .brand-dept{
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 1px;
+}
+
+.login-card h2{
+  font-size: 26px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.03em;
+  margin-bottom: 4px;
+}
+.login-card p.login-subtitle{
+  font-size: 13.5px;
+  color: #64748b;
+  margin-bottom: 22px;
+  line-height: 1.5;
+}
+
+/* Form Fields */
+.login-field-group{
+  margin-bottom: 18px;
+}
+.login-field-group label{
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 7px;
+}
+.login-input-wrap{
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.login-input-wrap .field-icon{
+  position: absolute;
+  left: 14px;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+.login-input-wrap input{
+  width: 100%;
+  padding: 13px 14px 13px 42px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 13px;
+  font-size: 14.5px;
+  color: #0f172a;
+  transition: all .15s ease;
+  box-shadow: inset 0 2px 4px rgba(15,23,42,0.03);
+}
+.login-input-wrap input:focus{
+  outline: none;
+  background: #fff;
+  border-color: #0d9488;
+  box-shadow: 0 0 0 3.5px rgba(13, 148, 136, 0.18);
+}
+.login-input-wrap input::placeholder{
+  color: #94a3b8;
+}
+
+/* Password Toggle Eye Button */
+.btn-toggle-pwd{
+  position: absolute;
+  right: 12px;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  padding: 6px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: color .15s ease;
+}
+.btn-toggle-pwd:hover{
+  color: #0f172a;
+}
+.btn-toggle-pwd .icon-eye-off{
+  display: none;
+}
+.btn-toggle-pwd.revealed .icon-eye{
+  display: none;
+}
+.btn-toggle-pwd.revealed .icon-eye-off{
+  display: block;
+}
+
+/* Error message */
+.login-error{
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+  padding: 11px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 16px;
+  display: none;
+  line-height: 1.45;
+}
+.login-error.show{
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+/* Sign In Button */
+.btn-auth-submit{
+  width: 100%;
+  padding: 14px 20px;
+  background: linear-gradient(135deg, #0d9488 0%, #059669 100%);
+  color: #fff;
+  border: none;
+  border-radius: 13px;
+  font-size: 15px;
+  font-weight: 700;
+  box-shadow: 0 12px 24px -8px rgba(13, 148, 136, 0.6);
+  transition: all .15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  margin-top: 4px;
+}
+.btn-auth-submit:hover{
+  background: linear-gradient(135deg, #14b8a6 0%, #10b981 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 28px -8px rgba(13, 148, 136, 0.7);
+}
+.btn-auth-submit:active{
+  transform: translateY(1px);
+}
+.btn-auth-submit:disabled{
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Barcode Quick Link Inside Login Card */
+.auth-divider{
+  display: flex;
+  align-items: center;
+  margin: 22px 0 16px;
+  color: #94a3b8;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.auth-divider::before, .auth-divider::after{
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #e2e8f0;
+}
+.auth-divider span{
+  padding: 0 12px;
+}
+
+.card-barcode-btn{
+  width: 100%;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-decoration: none;
+  color: #0f172a;
+  transition: all .15s ease;
+}
+.card-barcode-btn:hover{
+  background: #e6f7f5;
+  border-color: #99f6e4;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px -4px rgba(13, 148, 136, 0.15);
+}
+.cbb-left{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.cbb-icon{
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  color: #0d9488;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cbb-title{
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.cbb-tag{
+  background: rgba(16, 185, 129, 0.15);
+  color: #059669;
+  padding: 1px 6px;
+  border-radius: 6px;
+  font-size: 10.5px;
+  font-weight: 700;
+}
+.cbb-desc{
+  font-size: 11.5px;
+  color: #64748b;
+}
+.cbb-arrow{
+  color: #0d9488;
+  transition: transform .15s ease;
+}
+.card-barcode-btn:hover .cbb-arrow{
+  transform: translateX(3px);
+}
+
+.login-foot-note{
+  margin-top: 22px;
+  text-align: center;
+  font-size: 11.5px;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* Sidebar Navigation Link for Barcode */
+.nav-link-barcode{
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  margin-top: 14px;
+  color: #2dd4bf;
+  background: rgba(20, 184, 166, 0.12);
+  border: 1px solid rgba(20, 184, 166, 0.25);
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all .15s ease;
+}
+.nav-link-barcode:hover{
+  background: rgba(20, 184, 166, 0.22);
+  color: #fff;
+  transform: translateY(-1px);
+}
+.nav-link-barcode .ic{
+  font-size: 16px;
+  color: #2dd4bf;
+}
+.nav-link-barcode .free-pill{
+  margin-left: auto;
+  font-size: 10.5px;
+  background: rgba(16, 185, 129, 0.2);
+  color: #a7f3d0;
+  padding: 1px 6px;
+  border-radius: 6px;
+  font-weight: 700;
+}
+
+/* Responsive Overrides */
+@media(max-width: 960px){
+  .login-content-grid{
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+  .login-showcase{
+    text-align: center;
+    align-items: center;
+  }
+  .showcase-desc{
+    max-width: 100%;
+  }
+  .showcase-features{
+    align-items: center;
+  }
+  .barcode-highlight-card{
+    width: 100%;
+    max-width: 440px;
+  }
+  .login-card{
+    max-width: 440px;
+  }
+}
+
+@media(max-width: 640px){
+  .login-topbar{
+    padding: 14px 18px;
+  }
+  .login-topbar-title{
+    font-size: 13.5px;
+  }
+  .cloud-status-badge{
+    display: none;
+  }
+  .login-body-wrapper{
+    padding: 24px 16px 40px;
+  }
+  .login-card{
+    padding: 26px 22px 24px;
+  }
+  .login-card h2{
+    font-size: 23px;
+  }
+  .showcase-title{
+    font-size: 30px;
+  }
+  .barcode-highlight-card{
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+  .bhc-btn{
+    width: 100%;
+    justify-content: center;
+  }
+}
 #app-shell.show{padding:20px;gap:22px;max-width:1920px;margin:auto}
 .sidebar{width:242px;background:radial-gradient(ellipse at 0% 0%,#28525e 0,transparent 52%),linear-gradient(160deg,#142e40,#0a1b2b 75%);border:1px solid #ffffff38;box-shadow:0 20px 30px -20px #0c2c5190,0 1px 0 #ffffff30 inset,3px 0 0 #102d3e;border-radius:24px}
 .sidebar-brand{padding:28px 20px;gap:11px}.sidebar-brand img{width:40px;height:40px;border-radius:12px}.sidebar-brand .t1{font-size:14px}.sidebar-brand .t2{font-size:12px;color:#91b0c0;letter-spacing:.03em}
@@ -436,47 +1050,134 @@ table{font-size:14px}thead th{background:#f0f5f8;font-size:12px;letter-spacing:.
 @media(hover:hover){.stat-card,.mini-stat{transition:transform .2s,box-shadow .2s}.stat-card:hover,.mini-stat:hover{transform:translateY(-3px);box-shadow:0 5px 0 #d8e2e7,0 15px 25px -16px #16394c45}}
 @media(min-width:1500px){.content{padding:32px 40px}.topbar{padding:30px 40px}.ledger-hero{min-height:265px}.chart-wrap{height:300px}}
 @media(max-width:1100px){#app-shell.show{gap:16px;padding:16px}.sidebar{width:218px;top:16px;height:calc(100dvh - 32px)}.main{height:calc(100dvh - 32px)}.content{padding:22px}.topbar{padding:24px 22px}.hero-row,.two-col{grid-template-columns:1fr}.mini-stat-col{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.mini-stat{align-items:flex-start;flex-direction:column;padding:16px;gap:8px}.mini-stat .val{margin-left:0}.mini-stat .go{padding-left:0}.last-sync{max-width:100px;text-align:right}}
-@media(max-width:880px){#app-shell.show{padding:0;gap:0}.main{height:100dvh;border:0;border-radius:0}.sidebar{position:fixed;top:0;height:100dvh;width:258px;border-radius:0 24px 24px 0}.sidebar-overlay{backdrop-filter:blur(5px);background:#05172488}.hamburger{width:40px;height:40px;flex-shrink:0;background:linear-gradient(#fff,#e9f0f4);box-shadow:0 2px 0 #d6e1e6}.topbar h2{font-size:25px}.topbar .desc{font-size:13px}.login-intro{max-width:45%}.login-intro h2{font-size:44px}#login-screen{gap:38px;padding:50px 28px}.login-card{padding:30px;max-width:380px}.prism-art{transform:scale(.8);transform-origin:left center;height:220px}}
-@media(max-width:680px){#login-screen{padding:28px 20px 40px;flex-direction:column;gap:28px;justify-content:center}.login-intro{width:100%;max-width:420px}.intro-kicker{margin-bottom:14px;font-size:11px}.login-intro h2{font-size:36px;max-width:none;letter-spacing:-.045em}.login-intro h2 span{display:inline}.intro-description,.prism-art,.intro-footer{display:none}.login-card{max-width:420px;padding:28px}.login-brand{margin-bottom:28px}.login-card h1{font-size:28px}.topbar{padding:18px 16px;gap:10px}.topbar h2{font-size:22px}.topbar .desc{max-width:27ch;font-size:12px}.last-sync{display:none}.topbar-right{gap:0}.refresh-btn{font-size:12px;padding:8px 10px}.content{padding:18px 14px 40px}.hero-row{gap:18px;margin-bottom:20px}.ledger-hero{padding:25px 22px;min-height:235px}.ledger-hero .amount{font-size:40px}.ledger-hero .foot-row{gap:16px}.ledger-hero .foot-item .k{font-size:11px}.mini-stat-col{grid-template-columns:1fr 1fr}.mini-stat.bad{grid-column:1 / -1;flex-direction:row;align-items:center}.mini-stat.bad .val{margin-left:auto}.mini-stat .lbl{font-size:13px}.mini-stat .val{font-size:20px}.two-col{gap:20px}.card-head{padding:17px}.card-head h3{font-size:14px}.filter-bar{padding:16px 14px}.chip-group{max-width:100%;gap:2px}.chip{font-size:12px;padding:8px 10px}.date-inputs input[type=date]{width:138px;padding:9px 7px;font-size:12px}.search-box{max-width:none}.stat-grid{gap:10px}.stat-card{padding:15px 12px}.stat-card .lbl{font-size:11px}.stat-card .val{font-size:21px}thead th,tbody td{padding:13px 14px}.chart-wrap{height:235px;padding:20px 14px}.feed-row{flex-wrap:wrap}.feed-text{flex-basis:70%}}
+@media(max-width:880px){#app-shell.show{padding:0;gap:0}.main{height:100dvh;border:0;border-radius:0}.sidebar{position:fixed;top:0;height:100dvh;width:258px;border-radius:0 24px 24px 0}.sidebar-overlay{backdrop-filter:blur(5px);background:#05172488}.hamburger{width:40px;height:40px;flex-shrink:0;background:linear-gradient(#fff,#e9f0f4);box-shadow:0 2px 0 #d6e1e6}.topbar h2{font-size:25px}.topbar .desc{font-size:13px}}
+@media(max-width:680px){.topbar{padding:18px 16px;gap:10px}.topbar h2{font-size:22px}.topbar .desc{max-width:27ch;font-size:12px}.last-sync{display:none}.topbar-right{gap:0}.refresh-btn{font-size:12px;padding:8px 10px}.content{padding:18px 14px 40px}.hero-row{gap:18px;margin-bottom:20px}.ledger-hero{padding:25px 22px;min-height:235px}.ledger-hero .amount{font-size:40px}.ledger-hero .foot-row{gap:16px}.ledger-hero .foot-item .k{font-size:11px}.mini-stat-col{grid-template-columns:1fr 1fr}.mini-stat.bad{grid-column:1 / -1;flex-direction:row;align-items:center}.mini-stat.bad .val{margin-left:auto}.mini-stat .lbl{font-size:13px}.mini-stat .val{font-size:20px}.two-col{gap:20px}.card-head{padding:17px}.card-head h3{font-size:14px}.filter-bar{padding:16px 14px}.chip-group{max-width:100%;gap:2px}.chip{font-size:12px;padding:8px 10px}.date-inputs input[type=date]{width:138px;padding:9px 7px;font-size:12px}.search-box{max-width:none}.stat-grid{gap:10px}.stat-card{padding:15px 12px}.stat-card .lbl{font-size:11px}.stat-card .val{font-size:21px}thead th,tbody td{padding:13px 14px}.chart-wrap{height:235px;padding:20px 14px}.feed-row{flex-wrap:wrap}.feed-text{flex-basis:70%}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.stat-card:hover,.mini-stat:hover,button:hover{transform:none!important}}
 </style>
 </head>
 <body>
 
 <div id="login-screen">
-  <div class="login-intro">
-    <div class="intro-kicker">KVIB / POS Monitor</div>
-    <h2>Your business.<br><span>In clear view.</span></h2>
-    <p class="intro-description">Sales, stock, and every little detail. One connected view of your day.</p>
-    <div class="prism-art" aria-hidden="true"><div class="prism-ring"></div><div class="prism-ring second"></div></div>
-    <div class="intro-footer">MIZORAM KHADI &amp; VILLAGE INDUSTRIES BOARD</div>
-  </div>
-  <div class="login-card">
-    <div class="login-brand">
-      <img src="kvilogo.jpg" alt="KVIB logo" onerror="this.style.display='none'">
+  <!-- Top Navigation Bar on Login Screen -->
+  <header class="login-topbar">
+    <div class="login-topbar-brand">
+      <img src="kvilogo.jpg" alt="KVIB Logo" onerror="this.style.display='none'">
       <div>
-        <div class="name">Mizoram KVI Board</div>
-        <div class="sub">Sales &amp; Inventory Monitor</div>
+        <div class="login-topbar-title">Mizoram KVI Board</div>
+        <div class="login-topbar-sub">POS &amp; Inventory Central Monitor</div>
       </div>
     </div>
-    <h1>Welcome back.</h1>
-    <p class="hint">Sign in to see your latest sales and inventory.</p>
-    <div class="login-error" id="login-error" role="alert"></div>
-    <form id="login-form">
-      <div class="field">
-        <label for="login-email">Email address</label>
-        <input type="email" id="login-email" autocomplete="username" placeholder="you@example.com" required>
+    <div class="login-topbar-right">
+      <span class="cloud-status-badge">
+        <span class="cloud-dot"></span>
+        <span>Cloud Sync Live</span>
+      </span>
+    </div>
+  </header>
+
+  <!-- Login Body with Split Grid -->
+  <div class="login-body-wrapper">
+    <div class="login-content-grid">
+      <!-- Left Column: Executive Showcase -->
+      <div class="login-showcase">
+        <div class="showcase-eyebrow">
+          <span>●</span>
+          <span>Mizoram KVIB · POS Monitor</span>
+        </div>
+        <h1 class="showcase-title">
+          Real-Time Sales &amp; <br>
+          <span>Inventory Intelligence.</span>
+        </h1>
+        <p class="showcase-desc">
+          Unified sales reporting, automated ledger balancing, and live stock tracking across Mizoram Khadi and Village Industries Board sales counters.
+        </p>
+
+        <div class="showcase-features">
+          <div class="showcase-feat-item">
+            <span class="feat-bullet">✓</span>
+            <span>Real-time POS transaction synchronization via Google Firebase</span>
+          </div>
+          <div class="showcase-feat-item">
+            <span class="feat-bullet">✓</span>
+            <span>Low-stock warnings, inventory analytics, and ledger activity log</span>
+          </div>
+          <div class="showcase-feat-item">
+            <span class="feat-bullet">✓</span>
+            <span>Centralized Barcode Studio for Khadi tags &amp; VI product stickers</span>
+          </div>
+        </div>
       </div>
-      <div class="field">
-        <label for="login-password">Password</label>
-        <input type="password" id="login-password" autocomplete="current-password" placeholder="••••••••" required>
+
+      <!-- Right Column: Login Card -->
+      <div class="login-card">
+        <div class="login-card-brand">
+          <img src="kvilogo.jpg" alt="KVIB Logo" onerror="this.style.display='none'">
+          <div>
+            <div class="brand-name">Mizoram KVI Board</div>
+            <div class="brand-dept">Sales &amp; Inventory Portal</div>
+          </div>
+        </div>
+
+        <h2>Welcome back</h2>
+        <p class="login-subtitle">Sign in to your account to access live sales and stock.</p>
+
+        <div class="login-error" id="login-error" role="alert"></div>
+
+        <form id="login-form">
+          <div class="login-field-group">
+            <label for="login-email">Email Address</label>
+            <div class="login-input-wrap">
+              <span class="field-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                  <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+              </span>
+              <input type="email" id="login-email" autocomplete="username" placeholder="name@mizoramkvib.in" required>
+            </div>
+          </div>
+
+          <div class="login-field-group">
+            <label for="login-password">Password</label>
+            <div class="login-input-wrap">
+              <span class="field-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+              </span>
+              <input type="password" id="login-password" autocomplete="current-password" placeholder="••••••••" required>
+              <button type="button" class="btn-toggle-pwd" id="toggle-password-btn" aria-label="Toggle password visibility" title="Show password">
+                <svg class="icon-eye" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                <svg class="icon-eye-off" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                  <line x1="1" y1="1" x2="23" y2="23"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-auth-submit" id="login-btn">
+            <span class="spinner" id="login-spinner"></span>
+            <span id="login-btn-text">Sign in to Portal</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+        </form>
+
+        <div class="login-foot-note">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          <span>Secured Cloud System · Authorized Staff Only · KVIB POS</span>
+        </div>
       </div>
-      <button type="submit" class="btn btn-primary" id="login-btn">
-        <span class="spinner" id="login-spinner"></span>
-        <span id="login-btn-text">Sign in</span>
-      </button>
-    </form>
-    <div class="login-foot">Read-only viewer · Project Infinitum · KVIB POS</div>
+    </div>
   </div>
 </div>
 
@@ -496,6 +1197,11 @@ table{font-size:14px}thead th{background:#f0f5f8;font-size:12px;letter-spacing:.
       <button class="nav-item" data-tab="inventory"><span class="ic">▤</span> Inventory</button>
       <button class="nav-item alert" data-tab="lowstock"><span class="ic">▼</span> Low Stock <span class="count" id="low-stock-count">0</span></button>
       <button class="nav-item" data-tab="activity"><span class="ic">≡</span> Activity Log</button>
+      <a href="barcode.html" class="nav-link-barcode" title="Open KVIB Barcode Studio (Khadi Tags &amp; VI Stickers)">
+        <span class="ic">🏷️</span>
+        <span>Barcode Studio</span>
+        <span class="free-pill" style="background:rgba(20,184,166,0.22); color:#2dd4bf; border:1px solid rgba(20,184,166,0.35);">Studio</span>
+      </a>
     </nav>
     <div class="sidebar-foot">
       <div class="sync-status">
@@ -608,6 +1314,7 @@ table{font-size:14px}thead th{background:#f0f5f8;font-size:12px;letter-spacing:.
           <div class="filter-bar">
             <div class="search-box"><span class="ic" aria-hidden="true">⌕</span><input type="text" id="inv-search" aria-label="Search inventory" placeholder="Search item or barcode…"></div>
             <div class="spacer"></div>
+            <a href="barcode.html" class="btn btn-ghost btn-sm" style="display:inline-flex; align-items:center; gap:6px; color:#0d9488; font-weight:700;" title="Open Barcode Studio to print tags &amp; stickers"><span class="ic">🏷️</span> Barcode Studio</a>
             <span style="font-size:12px; color:var(--ink-soft);" id="inv-count-text"></span>
           </div>
           <div style="padding:14px 20px;">
@@ -1317,6 +2024,18 @@ function wireEvents(){
   document.getElementById("activity-load-more").addEventListener("click", ()=>{
     state.activityShown += 50; renderActivity();
   });
+
+  const togglePwd = document.getElementById("toggle-password-btn");
+  if(togglePwd){
+    togglePwd.addEventListener("click", ()=>{
+      const pwd = document.getElementById("login-password");
+      if(!pwd) return;
+      const isPwd = pwd.getAttribute("type") === "password";
+      pwd.setAttribute("type", isPwd ? "text" : "password");
+      togglePwd.classList.toggle("revealed", isPwd);
+      togglePwd.setAttribute("title", isPwd ? "Hide password" : "Show password");
+    });
+  }
 
   document.getElementById("login-form").addEventListener("submit", async e=>{
     e.preventDefault();
