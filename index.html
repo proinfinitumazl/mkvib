@@ -6,7 +6,7 @@
 <title>KVIB Monitor — Sales &amp; Inventory Ledger</title>
 <link rel="icon" href="kvilogo.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Orbitron:wght@500;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js" onerror="this.onerror=null; var s=document.createElement('script'); s.src='https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js'; document.head.appendChild(s);"></script>
 <style>
 :root{
@@ -345,424 +345,394 @@ button:focus-visible,[data-goto]:focus-visible{outline:3px solid #19a7a2;outline
 button{transition:transform .2s,box-shadow .2s,background .2s!important}
 button:disabled{transform:none!important}
 ::selection{background:#9de6d9;color:#123c3c}
-/* ============ REDESIGNED MODERN LOGIN SCREEN ============ */
-#login-screen{
+/* ============ 3D FLASH-ERA CYBER-DECK LOGIN SCREEN ============ */
+#login-screen {
   min-height: 100vh;
   position: relative;
   isolation: isolate;
   display: flex;
   flex-direction: column;
-  background: #080d16;
-  color: #fff;
+  background: #030814;
+  color: #e0f2fe;
+  font-family: 'Rajdhani', -apple-system, sans-serif;
   overflow-x: hidden;
-  padding: 0;
+  perspective: 1200px;
+  perspective-origin: center center;
 }
-#login-screen::before{
+
+#login-screen::before {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: -1;
+  z-index: -2;
   background:
-    radial-gradient(ellipse 65% 55% at 15% 15%, rgba(13, 148, 136, 0.22), transparent 60%),
-    radial-gradient(ellipse 60% 50% at 85% 85%, rgba(16, 185, 129, 0.16), transparent 60%),
-    radial-gradient(ellipse 40% 40% at 75% 20%, rgba(56, 189, 248, 0.14), transparent 50%),
-    #080d16;
+    radial-gradient(ellipse 65% 50% at 50% 20%, rgba(14, 165, 233, 0.18), transparent 65%),
+    radial-gradient(ellipse 50% 40% at 85% 80%, rgba(13, 148, 136, 0.14), transparent 60%),
+    radial-gradient(ellipse 50% 40% at 15% 85%, rgba(56, 189, 248, 0.12), transparent 60%),
+    #030814;
 }
-#login-screen::after{
+
+#login-screen::after {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
+  background-size: 32px 32px;
   background-image: 
-    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, #000 30%, transparent 85%);
-  -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, #000 30%, transparent 85%);
+    linear-gradient(to right, rgba(56, 189, 248, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
+  mask-image: radial-gradient(ellipse 85% 85% at 50% 50%, #000 40%, transparent 90%);
+  -webkit-mask-image: radial-gradient(ellipse 85% 85% at 50% 50%, #000 40%, transparent 90%);
   pointer-events: none;
 }
 
-/* Header bar on login */
-.login-topbar{
+/* Sweeping Cyan Laser Scanline */
+@keyframes cyberLaserSweep {
+  0% { top: 0%; opacity: 0; }
+  15% { opacity: 0.9; }
+  85% { opacity: 0.9; }
+  100% { top: 100%; opacity: 0; }
+}
+.cyber-laser-scanline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent 0%, #38bdf8 25%, #ffffff 50%, #38bdf8 75%, transparent 100%);
+  box-shadow: 0 0 16px #38bdf8, 0 0 32px #0284c7;
+  animation: cyberLaserSweep 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  pointer-events: none;
+  z-index: 45;
+}
+
+/* Rotating Telemetry Rings */
+@keyframes spinCW { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes spinCCW { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+.spin-cw { animation: spinCW 20s linear infinite; }
+.spin-ccw { animation: spinCCW 13s linear infinite; }
+
+/* Equalizer Frequency Bars */
+@keyframes eqBarAnim {
+  0%, 100% { height: 4px; }
+  50% { height: 18px; }
+}
+.eq-bar-1 { animation: eqBarAnim 0.8s ease-in-out infinite; }
+.eq-bar-2 { animation: eqBarAnim 1.1s ease-in-out 0.2s infinite; }
+.eq-bar-3 { animation: eqBarAnim 0.7s ease-in-out 0.4s infinite; }
+.eq-bar-4 { animation: eqBarAnim 1.3s ease-in-out 0.1s infinite; }
+.eq-bar-5 { animation: eqBarAnim 0.9s ease-in-out 0.3s infinite; }
+
+/* Top Header Bar */
+.cyber-topbar {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px clamp(20px, 5vw, 60px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-  background: rgba(8, 13, 22, 0.65);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  padding: 16px clamp(16px, 4vw, 40px);
+  border-bottom: 1px solid rgba(56, 189, 248, 0.18);
+  background: rgba(3, 9, 20, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   position: relative;
-  z-index: 10;
+  z-index: 20;
 }
-.login-topbar-brand{
+.cyber-topbar-left {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
-.login-topbar-brand img{
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
-  object-fit: cover;
-  background: #fff;
-  padding: 2px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+.cyber-beacon {
+  width: 9px;
+  height: 9px;
+  background: #38bdf8;
+  border-radius: 2px;
+  transform: rotate(45deg);
+  box-shadow: 0 0 10px #38bdf8;
+  animation: beaconPulse 2s infinite ease-in-out;
 }
-.login-topbar-title{
-  font-size: 14.5px;
+@keyframes beaconPulse {
+  0%, 100% { opacity: 1; transform: rotate(45deg) scale(1); }
+  50% { opacity: 0.4; transform: rotate(45deg) scale(0.8); }
+}
+.cyber-topbar-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: #ffffff;
+}
+.cyber-tag-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
   font-weight: 700;
-  color: #fff;
-  letter-spacing: -0.01em;
+  color: #38bdf8;
+  background: rgba(8, 47, 73, 0.7);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  padding: 2px 7px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
 }
-.login-topbar-sub{
-  font-size: 11px;
-  color: #94a3b8;
-  letter-spacing: 0.02em;
-}
-
-.login-topbar-right{
+.cyber-topbar-right {
   display: flex;
   align-items: center;
   gap: 14px;
 }
-.cloud-status-badge{
+.cyber-equalizer {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 20px;
+  padding: 2px 7px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: 5px;
+}
+.eq-bar {
+  width: 3px;
+  background: #38bdf8;
+  border-radius: 2px;
+  box-shadow: 0 0 6px rgba(56, 189, 248, 0.8);
+}
+.cyber-status-pill {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(16, 185, 129, 0.12);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
   color: #34d399;
-  border: 1px solid rgba(16, 185, 129, 0.25);
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 11.5px;
-  font-weight: 600;
+  background: rgba(6, 78, 59, 0.4);
+  border: 1px solid rgba(52, 211, 153, 0.35);
+  padding: 3px 9px;
+  border-radius: 12px;
 }
-.cloud-dot{
+.cyber-dot-live {
   width: 6px;
   height: 6px;
   border-radius: 50%;
   background: #10b981;
   box-shadow: 0 0 8px #10b981;
-  animation: pulseDot 2s infinite ease-in-out;
-}
-@keyframes pulseDot{
-  0%, 100%{ opacity: 1; transform: scale(1); }
-  50%{ opacity: 0.5; transform: scale(0.85); }
+  animation: pulseDot 1.8s infinite ease-in-out;
 }
 
-/* Barcode Top Navigation Pill */
-.nav-barcode-btn{
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  background: rgba(20, 184, 166, 0.12);
-  border: 1px solid rgba(20, 184, 166, 0.35);
-  border-radius: 12px;
-  color: #2dd4bf;
-  font-size: 13px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all .2s ease;
-  box-shadow: 0 4px 14px -4px rgba(13, 148, 136, 0.3);
-}
-.nav-barcode-btn:hover{
-  background: rgba(20, 184, 166, 0.22);
-  border-color: rgba(45, 212, 191, 0.6);
-  color: #fff;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px -4px rgba(13, 148, 136, 0.5);
-}
-.nav-barcode-btn .free-tag{
-  background: rgba(16, 185, 129, 0.25);
-  color: #a7f3d0;
-  padding: 1px 6px;
-  border-radius: 6px;
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-}
-
-/* Main Login Wrap */
-.login-body-wrapper{
+/* 3D Tilt Stage */
+.cyber-stage {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px clamp(20px, 5vw, 60px);
+  padding: clamp(24px, 4vh, 48px) 16px;
   width: 100%;
 }
-.login-content-grid{
-  width: 100%;
-  max-width: 1140px;
-  display: grid;
-  grid-template-columns: 1.15fr 0.95fr;
-  gap: clamp(36px, 5vw, 72px);
-  align-items: center;
-}
-
-/* Left Hero Showcase */
-.login-showcase{
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
-}
-.showcase-eyebrow{
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(13, 148, 136, 0.15);
-  border: 1px solid rgba(20, 184, 166, 0.3);
-  padding: 5px 14px;
-  border-radius: 30px;
-  font-size: 12px;
-  font-weight: 700;
-  color: #2dd4bf;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  width: fit-content;
-}
-.showcase-title{
-  font-size: clamp(32px, 3.6vw, 50px);
-  font-weight: 800;
-  line-height: 1.14;
-  letter-spacing: -0.04em;
-  color: #ffffff;
-}
-.showcase-title span{
-  background: linear-gradient(120deg, #5eead4 0%, #14b8a6 50%, #34d399 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-.showcase-desc{
-  font-size: 15.5px;
-  line-height: 1.7;
-  color: #94a3b8;
-  max-width: 48ch;
-}
-
-/* Feature List */
-.showcase-features{
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 4px;
-}
-.showcase-feat-item{
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 13.5px;
-  color: #cbd5e1;
-}
-.feat-bullet{
-  width: 22px;
-  height: 22px;
-  border-radius: 6px;
-  background: rgba(13, 148, 136, 0.15);
-  border: 1px solid rgba(20, 184, 166, 0.3);
-  color: #2dd4bf;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  flex-shrink: 0;
-}
-
-/* Dedicated Barcode Highlight Card on Left */
-.barcode-highlight-card{
-  margin-top: 8px;
-  background: linear-gradient(135deg, rgba(20, 184, 166, 0.12), rgba(15, 23, 42, 0.8));
-  border: 1px solid rgba(45, 212, 191, 0.3);
-  border-radius: 18px;
-  padding: 20px 22px;
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  box-shadow: 0 16px 36px -12px rgba(0,0,0,0.4);
-  transition: all .2s ease;
-}
-.barcode-highlight-card:hover{
-  border-color: rgba(45, 212, 191, 0.55);
-  box-shadow: 0 20px 42px -12px rgba(13, 148, 136, 0.25);
-  transform: translateY(-2px);
-}
-.bhc-icon-box{
-  width: 46px;
-  height: 46px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #0d9488, #059669);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  box-shadow: 0 8px 16px -4px rgba(13, 148, 136, 0.5);
-}
-.bhc-content{
-  flex: 1;
-}
-.bhc-title-row{
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 3px;
-}
-.bhc-title{
-  font-size: 15px;
-  font-weight: 700;
-  color: #fff;
-}
-.bhc-badge{
-  background: rgba(16, 185, 129, 0.2);
-  color: #34d399;
-  border: 1px solid rgba(16, 185, 129, 0.35);
-  padding: 1px 7px;
-  border-radius: 6px;
-  font-size: 10.5px;
-  font-weight: 700;
-}
-.bhc-desc{
-  font-size: 12.5px;
-  color: #94a3b8;
-  line-height: 1.45;
-}
-.bhc-btn{
-  padding: 9px 16px;
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 10px;
-  font-size: 13px;
-  font-weight: 700;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  white-space: nowrap;
-  transition: all .15s ease;
-}
-.bhc-btn:hover{
-  background: #2dd4bf;
-  color: #042f2e;
-  border-color: #2dd4bf;
-}
-
-/* Right: Login Card */
-.login-card{
+.cyber-card-3d {
   width: 100%;
   max-width: 440px;
-  margin: 0 auto;
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  border-radius: 26px;
-  padding: 36px 34px 30px;
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease-out;
+  will-change: transform;
+  position: relative;
+}
+
+/* Metallic Cyber Chassis */
+.cyber-chassis {
+  background: linear-gradient(145deg, rgba(15, 23, 42, 0.96), rgba(8, 13, 22, 0.98), rgba(2, 6, 23, 0.96));
+  border: 2px solid;
+  border-image: linear-gradient(135deg, #38bdf8 0%, #1e293b 50%, #0d9488 100%) 1;
   box-shadow: 
-    0 30px 65px -15px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(255, 255, 255, 0.3) inset;
-  backdrop-filter: blur(28px);
-  -webkit-backdrop-filter: blur(28px);
-  color: #0f172a;
+    inset 0 1px 2px rgba(255, 255, 255, 0.28),
+    inset 0 -2px 6px rgba(0, 0, 0, 0.85),
+    0 25px 60px rgba(0, 0, 0, 0.85),
+    0 0 35px rgba(14, 165, 233, 0.22);
+  border-radius: 26px;
+  padding: clamp(26px, 4vw, 36px) clamp(20px, 4vw, 32px) clamp(22px, 3vw, 28px);
   position: relative;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
-.login-card-brand{
-  display: flex;
-  align-items: center;
-  gap: 13px;
-  margin-bottom: 22px;
-}
-.login-card-brand img{
-  width: 46px;
-  height: 46px;
-  border-radius: 12px;
-  object-fit: cover;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
-  background: #fff;
-  padding: 2px;
-  border: 1px solid #e2e8f0;
-}
-.login-card-brand .brand-name{
-  font-size: 15.5px;
-  font-weight: 800;
-  color: #0f172a;
-  line-height: 1.25;
-}
-.login-card-brand .brand-dept{
-  font-size: 12px;
-  color: #64748b;
-  margin-top: 1px;
-}
-
-.login-card h2{
-  font-size: 26px;
-  font-weight: 800;
-  color: #0f172a;
-  letter-spacing: -0.03em;
-  margin-bottom: 4px;
-}
-.login-card p.login-subtitle{
-  font-size: 13.5px;
-  color: #64748b;
-  margin-bottom: 22px;
-  line-height: 1.5;
-}
-
-/* Form Fields */
-.login-field-group{
-  margin-bottom: 18px;
-}
-.login-field-group label{
-  display: block;
-  font-size: 13px;
-  font-weight: 600;
-  color: #334155;
-  margin-bottom: 7px;
-}
-.login-input-wrap{
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-.login-input-wrap .field-icon{
+/* Corner Tech Screws */
+.cyber-screw {
   position: absolute;
-  left: 14px;
-  color: #94a3b8;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #1e293b;
+  border: 1px solid #475569;
   display: flex;
   align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  color: #64748b;
+  font-family: monospace;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.8);
+}
+.cyber-screw.top-left { top: 12px; left: 12px; }
+.cyber-screw.top-right { top: 12px; right: 12px; }
+.cyber-screw.bottom-left { bottom: 12px; left: 12px; }
+.cyber-screw.bottom-right { bottom: 12px; right: 12px; }
+
+/* Rotating Holographic KVIB Seal & Logo Circle */
+.holo-seal-wrap {
+  position: relative;
+  width: 136px;
+  height: 136px;
+  margin: 0 auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.holo-ring-outer {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(56, 189, 248, 0.45);
+}
+.holo-ring-inner {
+  position: absolute;
+  inset: 10px;
+  border-radius: 50%;
+  border: 2px dotted rgba(56, 189, 248, 0.35);
+}
+.holo-energy-glow {
+  position: absolute;
+  inset: 16px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.35) 0%, transparent 70%);
+  filter: blur(14px);
+}
+.holo-emblem-core {
+  width: 94px;
+  height: 94px;
+  border-radius: 50%;
+  background: #090e17;
+  border: 2.5px solid #38bdf8;
+  padding: 3px;
+  box-shadow: 
+    0 0 25px rgba(56, 189, 248, 0.65),
+    inset 0 0 14px rgba(56, 189, 248, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 10;
+  transform: translateZ(35px);
+  overflow: hidden;
+}
+.holo-emblem-core img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+.holo-bracket {
+  position: absolute;
+  color: #38bdf8;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 1;
+}
+.holo-bracket.tl { top: -2px; left: -2px; }
+.holo-bracket.tr { top: -2px; right: -2px; }
+.holo-bracket.bl { bottom: -2px; left: -2px; }
+.holo-bracket.br { bottom: -2px; right: -2px; }
+
+/* Titles */
+.cyber-header-block {
+  text-align: center;
+  margin-bottom: 22px;
+  transform: translateZ(20px);
+}
+.cyber-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  color: #38bdf8;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  text-shadow: 0 0 12px rgba(56, 189, 248, 0.6);
+}
+.cyber-title {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(24px, 3.2vw, 28px);
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: 0.08em;
+  margin: 0;
+  text-shadow: 0 0 24px rgba(56, 189, 248, 0.75);
+}
+.cyber-subtitle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: #94a3b8;
+  margin-top: 5px;
+  letter-spacing: 0.04em;
+}
+
+/* Fields */
+.cyber-field-group {
+  margin-bottom: 16px;
+  transform: translateZ(15px);
+}
+.cyber-field-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.cyber-field-header label {
+  font-family: 'Orbitron', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  color: #7dd3fc;
+  letter-spacing: 0.12em;
+}
+.cyber-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.cyber-prompt {
+  position: absolute;
+  left: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: #38bdf8;
   pointer-events: none;
 }
-.login-input-wrap input{
+.cyber-input-wrap input {
   width: 100%;
-  padding: 13px 14px 13px 42px;
-  background: #f8fafc;
-  border: 1px solid #cbd5e1;
-  border-radius: 13px;
-  font-size: 14.5px;
-  color: #0f172a;
-  transition: all .15s ease;
-  box-shadow: inset 0 2px 4px rgba(15,23,42,0.03);
+  background: rgba(0, 0, 0, 0.75);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-radius: 10px;
+  padding: 11px 40px 11px 32px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 600;
+  color: #e0f2fe;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.7);
+  transition: all 0.15s ease;
 }
-.login-input-wrap input:focus{
+.cyber-input-wrap input:focus {
   outline: none;
-  background: #fff;
-  border-color: #0d9488;
-  box-shadow: 0 0 0 3.5px rgba(13, 148, 136, 0.18);
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25), inset 0 2px 5px rgba(0,0,0,0.8);
+  background: rgba(3, 11, 24, 0.9);
 }
-.login-input-wrap input::placeholder{
-  color: #94a3b8;
+.cyber-input-wrap input::placeholder {
+  color: #475569;
 }
 
 /* Password Toggle Eye Button */
-.btn-toggle-pwd{
+.cyber-input-wrap .btn-toggle-pwd {
   position: absolute;
-  right: 12px;
+  right: 10px;
   background: transparent;
   border: none;
-  color: #94a3b8;
+  color: #38bdf8;
   padding: 6px;
   border-radius: 6px;
   display: flex;
@@ -771,164 +741,119 @@ button:disabled{transform:none!important}
   cursor: pointer;
   transition: color .15s ease;
 }
-.btn-toggle-pwd:hover{
-  color: #0f172a;
+.cyber-input-wrap .btn-toggle-pwd:hover {
+  color: #ffffff;
 }
-.btn-toggle-pwd .icon-eye-off{
+.cyber-input-wrap .btn-toggle-pwd .icon-eye-off {
   display: none;
 }
-.btn-toggle-pwd.revealed .icon-eye{
+.cyber-input-wrap .btn-toggle-pwd.revealed .icon-eye {
   display: none;
 }
-.btn-toggle-pwd.revealed .icon-eye-off{
+.cyber-input-wrap .btn-toggle-pwd.revealed .icon-eye-off {
   display: block;
 }
 
-/* Error message */
-.login-error{
-  background: #fef2f2;
-  color: #991b1b;
-  border: 1px solid #fecaca;
-  border-radius: 12px;
-  padding: 11px 14px;
-  font-size: 13px;
-  font-weight: 500;
-  margin-bottom: 16px;
-  display: none;
-  line-height: 1.45;
-}
-.login-error.show{
-  display: flex;
-  align-items: center;
-  gap: 9px;
-}
-
-/* Sign In Button */
-.btn-auth-submit{
+/* 3D Tactile Push Button */
+.btn-push-3d-cyan {
   width: 100%;
-  padding: 14px 20px;
-  background: linear-gradient(135deg, #0d9488 0%, #059669 100%);
-  color: #fff;
+  padding: 13px 20px;
+  border-radius: 12px;
   border: none;
-  border-radius: 13px;
-  font-size: 15px;
-  font-weight: 700;
-  box-shadow: 0 12px 24px -8px rgba(13, 148, 136, 0.6);
-  transition: all .15s ease;
-  display: inline-flex;
+  background: linear-gradient(180deg, #38bdf8 0%, #0284c7 60%, #0369a1 100%);
+  color: #ffffff;
+  font-family: 'Orbitron', monospace;
+  font-size: 12.5px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
   cursor: pointer;
-  margin-top: 4px;
+  box-shadow: 
+    0 6px 0 #075985,
+    0 14px 25px rgba(2, 132, 199, 0.55),
+    inset 0 1px 1px rgba(255, 255, 255, 0.7);
+  transition: all 0.1s ease;
+  margin-top: 10px;
+  transform: translateZ(25px);
 }
-.btn-auth-submit:hover{
-  background: linear-gradient(135deg, #14b8a6 0%, #10b981 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 16px 28px -8px rgba(13, 148, 136, 0.7);
+.btn-push-3d-cyan:active {
+  transform: translateZ(25px) translateY(4px);
+  box-shadow: 
+    0 2px 0 #075985,
+    0 6px 12px rgba(2, 132, 199, 0.4),
+    inset 0 1px 1px rgba(255, 255, 255, 0.7);
 }
-.btn-auth-submit:active{
-  transform: translateY(1px);
-}
-.btn-auth-submit:disabled{
+.btn-push-3d-cyan:disabled {
   opacity: 0.65;
   cursor: not-allowed;
-  transform: none;
+  transform: translateZ(25px);
 }
 
-/* Barcode Quick Link Inside Login Card */
-.auth-divider{
+/* Error Alert */
+.cyber-login-error {
+  background: rgba(127, 29, 29, 0.4);
+  border: 1px solid rgba(239, 68, 68, 0.65);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  color: #fca5a5;
+  margin-bottom: 14px;
+  display: none;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.25);
+  line-height: 1.4;
+}
+.cyber-login-error.show {
+  display: flex;
+}
+
+/* Subtle Foot Note Inside Card */
+.cyber-foot-status {
+  margin-top: 18px;
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  color: #64748b;
   display: flex;
   align-items: center;
-  margin: 22px 0 16px;
-  color: #94a3b8;
-  font-size: 11.5px;
-  font-weight: 600;
+  justify-content: center;
+  gap: 8px;
   letter-spacing: 0.06em;
-  text-transform: uppercase;
 }
-.auth-divider::before, .auth-divider::after{
-  content: "";
-  flex: 1;
-  height: 1px;
-  background: #e2e8f0;
-}
-.auth-divider span{
-  padding: 0 12px;
+.cyber-cyan-dot {
+  color: #38bdf8;
+  font-size: 8px;
 }
 
-.card-barcode-btn{
+/* Bottom Ticker Footer */
+.cyber-footer {
   width: 100%;
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  padding: 12px 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  text-decoration: none;
-  color: #0f172a;
-  transition: all .15s ease;
-}
-.card-barcode-btn:hover{
-  background: #e6f7f5;
-  border-color: #99f6e4;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 14px -4px rgba(13, 148, 136, 0.15);
-}
-.cbb-left{
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.cbb-icon{
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  background: #fff;
-  border: 1px solid #cbd5e1;
-  color: #0d9488;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.cbb-title{
-  font-size: 14px;
-  font-weight: 700;
-  color: #0f172a;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
-.cbb-tag{
-  background: rgba(16, 185, 129, 0.15);
-  color: #059669;
-  padding: 1px 6px;
-  border-radius: 6px;
-  font-size: 10.5px;
-  font-weight: 700;
-}
-.cbb-desc{
-  font-size: 11.5px;
+  padding: 10px clamp(16px, 4vw, 40px);
+  border-top: 1px solid rgba(56, 189, 248, 0.15);
+  background: rgba(3, 9, 20, 0.85);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
   color: #64748b;
+  position: relative;
+  z-index: 20;
 }
-.cbb-arrow{
-  color: #0d9488;
-  transition: transform .15s ease;
+.cyber-footer-left {
+  color: #7dd3fc;
+  letter-spacing: 0.05em;
 }
-.card-barcode-btn:hover .cbb-arrow{
-  transform: translateX(3px);
-}
-
-.login-foot-note{
-  margin-top: 22px;
-  text-align: center;
-  font-size: 11.5px;
-  color: #94a3b8;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
+.cyber-status-online {
+  color: #34d399;
+  font-weight: 700;
+  letter-spacing: 0.08em;
 }
 
 /* Sidebar Navigation Link for Barcode */
@@ -966,62 +891,15 @@ button:disabled{transform:none!important}
   font-weight: 700;
 }
 
-/* Responsive Overrides */
-@media(max-width: 960px){
-  .login-content-grid{
-    grid-template-columns: 1fr;
-    gap: 36px;
-  }
-  .login-showcase{
-    text-align: center;
-    align-items: center;
-  }
-  .showcase-desc{
-    max-width: 100%;
-  }
-  .showcase-features{
-    align-items: center;
-  }
-  .barcode-highlight-card{
-    width: 100%;
-    max-width: 440px;
-  }
-  .login-card{
-    max-width: 440px;
-  }
-}
-
-@media(max-width: 640px){
-  .login-topbar{
-    padding: 14px 18px;
-  }
-  .login-topbar-title{
-    font-size: 13.5px;
-  }
-  .cloud-status-badge{
-    display: none;
-  }
-  .login-body-wrapper{
-    padding: 24px 16px 40px;
-  }
-  .login-card{
-    padding: 26px 22px 24px;
-  }
-  .login-card h2{
-    font-size: 23px;
-  }
-  .showcase-title{
-    font-size: 30px;
-  }
-  .barcode-highlight-card{
-    flex-direction: column;
-    text-align: center;
-    gap: 12px;
-  }
-  .bhc-btn{
-    width: 100%;
-    justify-content: center;
-  }
+/* Responsive Cyber-Deck adjustments */
+@media(max-width: 480px){
+  .cyber-topbar-title{ font-size: 11.5px; }
+  .cyber-tag-badge{ display: none; }
+  .cyber-chassis{ padding: 24px 18px 20px; border-radius: 20px; }
+  .holo-seal-wrap{ width: 118px; height: 118px; }
+  .holo-emblem-core{ width: 80px; height: 80px; }
+  .cyber-title{ font-size: 22px; }
+  .cyber-footer{ flex-direction: column; gap: 4px; text-align: center; }
 }
 #app-shell.show{padding:20px;gap:22px;max-width:1920px;margin:auto}
 .sidebar{width:242px;background:radial-gradient(ellipse at 0% 0%,#28525e 0,transparent 52%),linear-gradient(160deg,#142e40,#0a1b2b 75%);border:1px solid #ffffff38;box-shadow:0 20px 30px -20px #0c2c5190,0 1px 0 #ffffff30 inset,3px 0 0 #102d3e;border-radius:24px}
@@ -1058,101 +936,101 @@ table{font-size:14px}thead th{background:#f0f5f8;font-size:12px;letter-spacing:.
 <body>
 
 <div id="login-screen">
-  <!-- Top Navigation Bar on Login Screen -->
-  <header class="login-topbar">
-    <div class="login-topbar-brand">
-      <img src="kvilogo.jpg" alt="KVIB Logo" onerror="this.style.display='none'">
-      <div>
-        <div class="login-topbar-title">Mizoram KVI Board</div>
-        <div class="login-topbar-sub">POS &amp; Inventory Central Monitor</div>
-      </div>
+  <!-- Sweeping Laser Scanline -->
+  <div class="cyber-laser-scanline"></div>
+
+  <!-- Top Telemetry Header Bar -->
+  <header class="cyber-topbar">
+    <div class="cyber-topbar-left">
+      <div class="cyber-beacon"></div>
+      <div class="cyber-topbar-title">MKVIB // CORE</div>
+      <div class="cyber-tag-badge">GOVT. OF MIZORAM</div>
     </div>
-    <div class="login-topbar-right">
-      <span class="cloud-status-badge">
-        <span class="cloud-dot"></span>
-        <span>Cloud Sync Live</span>
-      </span>
+    
+    <div class="cyber-topbar-right">
+      <!-- Mini Audio Visualizer / Frequency Bars -->
+      <div class="cyber-equalizer">
+        <div class="eq-bar eq-bar-1"></div>
+        <div class="eq-bar eq-bar-2"></div>
+        <div class="eq-bar eq-bar-3"></div>
+        <div class="eq-bar eq-bar-4"></div>
+        <div class="eq-bar eq-bar-5"></div>
+      </div>
+      <div class="cyber-status-pill">
+        <span class="cyber-dot-live"></span>
+        <span>RTDB LIVE</span>
+      </div>
     </div>
   </header>
 
-  <!-- Login Body with Split Grid -->
-  <div class="login-body-wrapper">
-    <div class="login-content-grid">
-      <!-- Left Column: Executive Showcase -->
-      <div class="login-showcase">
-        <div class="showcase-eyebrow">
-          <span>●</span>
-          <span>Mizoram KVIB · POS Monitor</span>
-        </div>
-        <h1 class="showcase-title">
-          Real-Time Sales &amp; <br>
-          <span>Inventory Intelligence.</span>
-        </h1>
-        <p class="showcase-desc">
-          Unified sales reporting, automated ledger balancing, and live stock tracking across Mizoram Khadi and Village Industries Board sales counters.
-        </p>
+  <!-- 3D Perspective Stage -->
+  <div class="cyber-stage" id="cyber-stage">
+    <div class="cyber-card-3d" id="card-3d-tilt">
+      <div class="cyber-chassis">
+        <!-- Corner Metallic Screws -->
+        <div class="cyber-screw top-left">×</div>
+        <div class="cyber-screw top-right">×</div>
+        <div class="cyber-screw bottom-left">×</div>
+        <div class="cyber-screw bottom-right">×</div>
 
-        <div class="showcase-features">
-          <div class="showcase-feat-item">
-            <span class="feat-bullet">✓</span>
-            <span>Real-time POS transaction synchronization via Google Firebase</span>
+        <!-- Rotating Holographic KVIB Seal & Logo Circle -->
+        <div class="holo-seal-wrap">
+          <!-- Outer Telemetry Ring 1 (Clockwise) -->
+          <div class="holo-ring-outer spin-cw"></div>
+          <!-- Inner Telemetry Ring 2 (Counter-Clockwise) -->
+          <div class="holo-ring-inner spin-ccw"></div>
+          <!-- Glowing Energy Aura -->
+          <div class="holo-energy-glow"></div>
+          
+          <!-- Floating 3D Emblem Core with Official KVIB Logo -->
+          <div class="holo-emblem-core">
+            <img src="kvib_logo_circle.png" alt="Mizoram KVIB Seal" onerror="this.src='kvilogo.jpg'">
           </div>
-          <div class="showcase-feat-item">
-            <span class="feat-bullet">✓</span>
-            <span>Low-stock warnings, inventory analytics, and ledger activity log</span>
-          </div>
-          <div class="showcase-feat-item">
-            <span class="feat-bullet">✓</span>
-            <span>Centralized Barcode Studio for Khadi tags &amp; VI product stickers</span>
-          </div>
-        </div>
-      </div>
 
-      <!-- Right Column: Login Card -->
-      <div class="login-card">
-        <div class="login-card-brand">
-          <img src="kvilogo.jpg" alt="KVIB Logo" onerror="this.style.display='none'">
-          <div>
-            <div class="brand-name">Mizoram KVI Board</div>
-            <div class="brand-dept">Sales &amp; Inventory Portal</div>
-          </div>
+          <!-- HUD Corner Brackets -->
+          <div class="holo-bracket tl">┌</div>
+          <div class="holo-bracket tr">┐</div>
+          <div class="holo-bracket bl">└</div>
+          <div class="holo-bracket br">┘</div>
         </div>
 
-        <h2>Welcome back</h2>
-        <p class="login-subtitle">Sign in to your account to access live sales and stock.</p>
+        <!-- Terminal Heading -->
+        <div class="cyber-header-block">
+          <div class="cyber-eyebrow">GOVERNMENT OF MIZORAM</div>
+          <h1 class="cyber-title">MIZORAM KVIB</h1>
+          <div class="cyber-subtitle">KHADI &amp; VILLAGE INDUSTRIES BOARD · POS MONITOR</div>
+        </div>
 
-        <div class="login-error" id="login-error" role="alert"></div>
+        <!-- Error Alert Container -->
+        <div class="cyber-login-error" id="login-error" role="alert"></div>
 
+        <!-- Login Form -->
         <form id="login-form">
-          <div class="login-field-group">
-            <label for="login-email">Email Address</label>
-            <div class="login-input-wrap">
-              <span class="field-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                  <polyline points="22,6 12,13 2,6"></polyline>
-                </svg>
-              </span>
+          <div class="cyber-field-group">
+            <div class="cyber-field-header">
+              <label for="login-email">OPERATOR ID</label>
+              <span class="cyber-tag-badge">SYS.USR</span>
+            </div>
+            <div class="cyber-input-wrap">
+              <span class="cyber-prompt">&gt;</span>
               <input type="email" id="login-email" autocomplete="username" placeholder="name@mizoramkvib.in" required>
             </div>
           </div>
 
-          <div class="login-field-group">
-            <label for="login-password">Password</label>
-            <div class="login-input-wrap">
-              <span class="field-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                </svg>
-              </span>
+          <div class="cyber-field-group">
+            <div class="cyber-field-header">
+              <label for="login-password">PASSPHRASE</label>
+              <span class="cyber-tag-badge">AES-256</span>
+            </div>
+            <div class="cyber-input-wrap">
+              <span class="cyber-prompt">#</span>
               <input type="password" id="login-password" autocomplete="current-password" placeholder="••••••••" required>
               <button type="button" class="btn-toggle-pwd" id="toggle-password-btn" aria-label="Toggle password visibility" title="Show password">
-                <svg class="icon-eye" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg class="icon-eye" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                   <circle cx="12" cy="12" r="3"></circle>
                 </svg>
-                <svg class="icon-eye-off" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg class="icon-eye-off" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
                   <line x1="1" y1="1" x2="23" y2="23"></line>
                 </svg>
@@ -1160,25 +1038,33 @@ table{font-size:14px}thead th{background:#f0f5f8;font-size:12px;letter-spacing:.
             </div>
           </div>
 
-          <button type="submit" class="btn-auth-submit" id="login-btn">
+          <!-- 3D Tactile Push Button -->
+          <button type="submit" class="btn-push-3d-cyan" id="login-btn">
             <span class="spinner" id="login-spinner"></span>
-            <span id="login-btn-text">Sign in to Portal</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
+            <span id="login-btn-text">INITIALIZE LINK</span>
+            <span style="font-size: 15px;">»</span>
           </button>
         </form>
 
-        <div class="login-foot-note">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-          </svg>
-          <span>Secured Cloud System · Authorized Staff Only · KVIB POS</span>
+        <!-- Subtle Barcode / Cloud Badge -->
+        <div class="cyber-foot-status">
+          <span>SECURED CLOUD NODE</span>
+          <span class="cyber-cyan-dot">●</span>
+          <span>FIREBASE SHA-256</span>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Bottom Telemetry Ticker -->
+  <footer class="cyber-footer">
+    <div class="cyber-footer-left">
+      <span>LOC: AIZAWL-HQ // COMMERCE &amp; INDUSTRIES</span>
+    </div>
+    <div class="cyber-footer-right">
+      <span class="cyber-status-online">SYS.STATUS: ONLINE</span>
+    </div>
+  </footer>
 </div>
 
 <div id="app-shell">
@@ -2037,6 +1923,40 @@ function wireEvents(){
     });
   }
 
+  
+  // 3D Flash-Era Tilt Physics for Cyber-Deck
+  const cyberCard = document.getElementById('card-3d-tilt');
+  const cyberScreen = document.getElementById('login-screen');
+  if (cyberCard && cyberScreen) {
+    cyberScreen.addEventListener('mousemove', (e) => {
+      const rect = cyberCard.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = ((y - centerY) / centerY) * -12;
+      const rotateY = ((x - centerX) / centerX) * 12;
+      cyberCard.style.transform = `rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.02, 1.02, 1.02)`;
+    });
+    cyberScreen.addEventListener('mouseleave', () => {
+      cyberCard.style.transform = 'rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+    });
+    cyberScreen.addEventListener('touchmove', (e) => {
+      if (!e.touches[0]) return;
+      const rect = cyberCard.getBoundingClientRect();
+      const x = e.touches[0].clientX - rect.left;
+      const y = e.touches[0].clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = ((y - centerY) / centerY) * -10;
+      const rotateY = ((x - centerX) / centerX) * 10;
+      cyberCard.style.transform = `rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg)`;
+    }, { passive: true });
+    cyberScreen.addEventListener('touchend', () => {
+      cyberCard.style.transform = 'rotateX(0deg) rotateY(0deg)';
+    });
+  }
+
   document.getElementById("login-form").addEventListener("submit", async e=>{
     e.preventDefault();
     const email = document.getElementById("login-email").value.trim();
@@ -2046,14 +1966,14 @@ function wireEvents(){
     const spinner = document.getElementById("login-spinner");
     const btnText = document.getElementById("login-btn-text");
     errEl.classList.remove("show");
-    btn.disabled = true; spinner.classList.add("show"); btnText.textContent = "Signing in…";
+    btn.disabled = true; spinner.classList.add("show"); btnText.textContent = "INITIALIZING…";
     try{
       await signIn(email, password);
       enterApp();
     }catch(err){
       errEl.textContent = err.message; errEl.classList.add("show");
     }finally{
-      btn.disabled = false; spinner.classList.remove("show"); btnText.textContent = "Sign in";
+      btn.disabled = false; spinner.classList.remove("show"); btnText.textContent = "INITIALIZE LINK";
     }
   });
 }

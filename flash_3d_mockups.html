@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KVIB 3D Flash-Style Landing Page Mockups</title>
+<script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  body { font-family: 'Rajdhani', sans-serif; }
+  .font-orbitron { font-family: 'Orbitron', monospace; }
+  .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* 3D Stage & Phone Frame */
+  .perspective-container {
+    perspective: 1200px;
+    perspective-origin: center center;
+  }
+  .phone-frame {
+    width: 390px;
+    height: 790px;
+    border-radius: 48px;
+    box-shadow: 0 0 0 12px #0f172a, 0 35px 80px -15px rgba(0,0,0,0.85), 0 0 40px rgba(14, 165, 233, 0.25);
+    overflow: hidden;
+    position: relative;
+    border: 3px solid rgba(255,255,255,0.15);
+    background: #030712;
+    transition: width 0.3s ease, height 0.3s ease, border-radius 0.3s ease;
+  }
+  .phone-notch {
+    width: 126px;
+    height: 28px;
+    background: #090e17;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    border-bottom-left-radius: 18px;
+    border-bottom-right-radius: 18px;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-top: none;
+  }
+  .phone-notch-cam {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #1e293b;
+    border: 1px solid rgba(56, 189, 248, 0.4);
+    box-shadow: 0 0 6px rgba(56, 189, 248, 0.5);
+  }
+  .phone-notch-mic {
+    width: 38px;
+    height: 4px;
+    border-radius: 4px;
+    background: #1e293b;
+  }
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+  .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* 3D Tilt Card */
+  .card-3d {
+    transform-style: preserve-3d;
+    transition: transform 0.15s ease-out;
+    will-change: transform;
+  }
+  .layer-depth-1 { transform: translateZ(15px); }
+  .layer-depth-2 { transform: translateZ(30px); }
+  .layer-depth-3 { transform: translateZ(50px); }
+
+  /* Flash-Era Metallic Bevels */
+  .metallic-chassis {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.98), rgba(2, 6, 23, 0.95));
+    border: 2px solid;
+    border-image: linear-gradient(135deg, #38bdf8 0%, #1e293b 50%, #0d9488 100%) 1;
+    box-shadow: 
+      inset 0 1px 1px rgba(255, 255, 255, 0.25),
+      inset 0 -2px 4px rgba(0, 0, 0, 0.8),
+      0 20px 40px rgba(0, 0, 0, 0.7),
+      0 0 30px rgba(13, 148, 136, 0.2);
+  }
+  .titanium-chassis {
+    background: linear-gradient(145deg, #1f1b18, #0e0c0a, #1a1613);
+    border: 2px solid;
+    border-image: linear-gradient(135deg, #fbbf24 0%, #78350f 50%, #f59e0b 100%) 1;
+    box-shadow: 
+      inset 0 1px 2px rgba(253, 230, 138, 0.35),
+      inset 0 -3px 6px rgba(0, 0, 0, 0.9),
+      0 25px 50px rgba(0, 0, 0, 0.8),
+      0 0 35px rgba(245, 158, 11, 0.25);
+  }
+
+  /* 3D Tactile Push Buttons */
+  .btn-push-3d-cyan {
+    background: linear-gradient(180deg, #38bdf8 0%, #0284c7 60%, #0369a1 100%);
+    box-shadow: 
+      0 6px 0 #075985,
+      0 12px 20px rgba(2, 132, 199, 0.5),
+      inset 0 1px 1px rgba(255, 255, 255, 0.6);
+    transition: all 0.1s ease;
+  }
+  .btn-push-3d-cyan:active {
+    transform: translateY(4px);
+    box-shadow: 
+      0 2px 0 #075985,
+      0 4px 10px rgba(2, 132, 199, 0.4),
+      inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  }
+
+  .btn-push-3d-gold {
+    background: linear-gradient(180deg, #fbbf24 0%, #d97706 60%, #b45309 100%);
+    box-shadow: 
+      0 6px 0 #78350f,
+      0 12px 20px rgba(217, 119, 6, 0.5),
+      inset 0 1px 1px rgba(255, 255, 255, 0.7);
+    transition: all 0.1s ease;
+  }
+  .btn-push-3d-gold:active {
+    transform: translateY(4px);
+    box-shadow: 
+      0 2px 0 #78350f,
+      0 4px 10px rgba(217, 119, 6, 0.4),
+      inset 0 1px 1px rgba(255, 255, 255, 0.7);
+  }
+
+  /* Laser Scan Animation */
+  @keyframes laserSweep {
+    0% { top: 0%; opacity: 0; }
+    15% { opacity: 0.85; }
+    85% { opacity: 0.85; }
+    100% { top: 100%; opacity: 0; }
+  }
+  .laser-scanline {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent 0%, #38bdf8 30%, #ffffff 50%, #38bdf8 70%, transparent 100%);
+    box-shadow: 0 0 15px #38bdf8, 0 0 30px #0284c7;
+    animation: laserSweep 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    pointer-events: none;
+    z-index: 40;
+  }
+  .laser-scanline-gold {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent 0%, #fbbf24 30%, #ffffff 50%, #fbbf24 70%, transparent 100%);
+    box-shadow: 0 0 15px #fbbf24, 0 0 30px #d97706;
+    animation: laserSweep 3.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    pointer-events: none;
+    z-index: 40;
+  }
+
+  /* Rotating Telemetry Rings */
+  @keyframes rotateCW { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @keyframes rotateCCW { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+  .spin-cw { animation: rotateCW 18s linear infinite; }
+  .spin-ccw { animation: rotateCCW 12s linear infinite; }
+  .spin-fast { animation: rotateCW 8s linear infinite; }
+
+  /* Audio Visualizer Bars */
+  @keyframes soundBar {
+    0%, 100% { height: 4px; }
+    50% { height: 18px; }
+  }
+  .bar-1 { animation: soundBar 0.8s ease-in-out infinite; }
+  .bar-2 { animation: soundBar 1.1s ease-in-out 0.2s infinite; }
+  .bar-3 { animation: soundBar 0.7s ease-in-out 0.4s infinite; }
+  .bar-4 { animation: soundBar 1.3s ease-in-out 0.1s infinite; }
+  .bar-5 { animation: soundBar 0.9s ease-in-out 0.3s infinite; }
+
+  /* Tech Grid Backdrop */
+  .grid-backdrop {
+    background-size: 32px 32px;
+    background-image: 
+      linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  }
+</style>
+</head>
+<body class="bg-black text-slate-100 min-h-screen p-4 md:p-8 antialiased selection:bg-teal-500 selection:text-black">
+
+  <!-- Header & Concept Controls -->
+  <header class="max-w-6xl mx-auto mb-8">
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5 pb-6 border-b border-cyan-500/20">
+      <div>
+        <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-400 text-xs font-bold uppercase tracking-widest mb-2 font-orbitron">
+          <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+          <span>3D FLASH ERA · HIGH-TECH REDESIGN</span>
+        </div>
+        <h1 class="text-2xl md:text-3xl font-black text-white tracking-wider font-orbitron">Mizoram KVIB — 3D Cybernetic Landing Page</h1>
+        <p class="text-sm text-slate-400 mt-1">Hmanlai Flash design changkang tawp, 3D interactive perspective, metallic chrome &amp; cyber telemetry:</p>
+      </div>
+
+      <!-- Controls: Concept Tabs & Device View -->
+      <div class="flex flex-wrap items-center gap-3">
+        <!-- 3 Design Selector -->
+        <div class="inline-flex p-1 bg-slate-900/90 border border-slate-700/80 rounded-xl text-xs font-bold font-orbitron">
+          <button id="btn-c1" class="px-3.5 py-2 rounded-lg bg-cyan-500 text-black shadow-lg shadow-cyan-500/30 transition-all flex items-center gap-1.5" onclick="chooseConcept(1)">
+            <span>⚡ Cyber-Deck</span>
+          </button>
+          <button id="btn-c2" class="px-3.5 py-2 rounded-lg text-slate-400 hover:text-white transition-all flex items-center gap-1.5" onclick="chooseConcept(2)">
+            <span>🛡️ Titanium Gold</span>
+          </button>
+          <button id="btn-c3" class="px-3.5 py-2 rounded-lg text-slate-400 hover:text-white transition-all flex items-center gap-1.5" onclick="chooseConcept(3)">
+            <span>🔮 Hologram HUD</span>
+          </button>
+        </div>
+
+        <!-- Viewport Switcher -->
+        <div class="inline-flex p-1 bg-slate-900 border border-slate-700/80 rounded-xl text-xs font-bold font-orbitron">
+          <button id="btn-mob" class="px-3 py-2 rounded-lg bg-slate-800 text-cyan-400 transition-all flex items-center gap-1.5" onclick="changeDevice('mobile')">
+            <span>📱 Mobile</span>
+          </button>
+          <button id="btn-desk" class="px-3 py-2 rounded-lg text-slate-400 hover:text-white transition-all flex items-center gap-1.5" onclick="changeDevice('desktop')">
+            <span>💻 Desktop</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Interactive 3D Stage -->
+  <main class="max-w-6xl mx-auto flex flex-col items-center justify-center pb-12">
+
+    <!-- Interactive Hint -->
+    <div class="text-center mb-4 text-xs font-mono text-cyan-400/80 tracking-wider flex items-center justify-center gap-2">
+      <span class="inline-block animate-bounce">👆</span>
+      <span>MOUSE MOVE (Desktop) EMAW TOUCH/DRAG (Phone) HMANGIN 3D IN TILT RAWH</span>
+    </div>
+
+    <!-- 3D Perspective Stage Wrapper -->
+    <div class="perspective-container">
+      
+      <!-- Phone Frame Container -->
+      <div id="phone-frame" class="phone-frame">
+        
+        <!-- Top Notch -->
+        <div id="phone-notch" class="phone-notch">
+          <div class="phone-notch-mic"></div>
+          <div class="phone-notch-cam"></div>
+        </div>
+
+        <!-- 3D Card Engine Container -->
+        <div id="card-3d-tilt" class="card-3d w-full h-full overflow-y-auto hide-scrollbar relative">
+
+          <!-- ======================================================== -->
+          <!-- CONCEPT 1: CYBER-DECK 3D (Holographic Sci-Fi Flash Portal)-->
+          <!-- ======================================================== -->
+          <div id="concept-1" class="concept-screen min-h-full flex flex-col justify-between p-6 relative bg-[#030914] text-cyan-50 grid-backdrop overflow-hidden">
+            <!-- Sweeping Laser Scanline -->
+            <div class="laser-scanline"></div>
+
+            <!-- Top HUD Bar -->
+            <div class="pt-6 flex items-center justify-between z-20">
+              <div class="flex items-center gap-2">
+                <div class="w-2.5 h-2.5 bg-cyan-400 rounded-sm rotate-45 shadow-sm shadow-cyan-400 animate-ping"></div>
+                <div class="font-orbitron text-xs font-black tracking-widest text-white">MKVIB//CORE</div>
+                <div class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-cyan-950 border border-cyan-800 text-cyan-400">NET-SEC</div>
+              </div>
+
+              <!-- Mini Equalizer -->
+              <div class="flex items-end gap-1 h-5 px-2 py-1 rounded bg-slate-900/80 border border-cyan-500/30">
+                <div class="w-1 bg-cyan-400 bar-1 rounded-full"></div>
+                <div class="w-1 bg-cyan-400 bar-2 rounded-full"></div>
+                <div class="w-1 bg-cyan-400 bar-3 rounded-full"></div>
+                <div class="w-1 bg-cyan-400 bar-4 rounded-full"></div>
+                <div class="w-1 bg-cyan-400 bar-5 rounded-full"></div>
+              </div>
+            </div>
+
+            <!-- Middle 3D Holographic Seal & Terminal Card -->
+            <div class="my-auto py-5 z-20 flex flex-col items-center">
+              
+              <!-- 3D Rotating Holographic KVIB Seal -->
+              <div class="relative w-36 h-36 flex items-center justify-center mb-6">
+                <!-- Outer Telemetry Ring 1 -->
+                <div class="absolute inset-0 rounded-full border border-dashed border-cyan-500/40 spin-cw"></div>
+                <!-- Outer Telemetry Ring 2 with tick marks -->
+                <div class="absolute inset-2 rounded-full border-2 border-cyan-400/30 spin-ccw" style="border-style: dotted;"></div>
+                <!-- Glowing Energy Aura -->
+                <div class="absolute inset-4 rounded-full bg-cyan-500/10 blur-xl"></div>
+                
+                <!-- Floating 3D Seal Core -->
+                <div class="w-24 h-24 rounded-full bg-gradient-to-br from-slate-900 to-black border-2 border-cyan-400 p-2 shadow-2xl shadow-cyan-500/50 flex flex-col items-center justify-center relative z-10 layer-depth-3">
+                  <div class="text-2xl">🏛️</div>
+                  <div class="font-orbitron text-[8px] font-black text-cyan-300 tracking-wider mt-0.5">KVIB</div>
+                  <div class="text-[7px] text-cyan-400/80 font-mono">AIZAWL</div>
+                </div>
+
+                <!-- Corner HUD Brackets -->
+                <div class="absolute -top-1 -left-1 text-cyan-400 text-xs font-mono font-bold">┌</div>
+                <div class="absolute -top-1 -right-1 text-cyan-400 text-xs font-mono font-bold">┐</div>
+                <div class="absolute -bottom-1 -left-1 text-cyan-400 text-xs font-mono font-bold">└</div>
+                <div class="absolute -bottom-1 -right-1 text-cyan-400 text-xs font-mono font-bold">┘</div>
+              </div>
+
+              <!-- Terminal Heading -->
+              <div class="text-center mb-5 layer-depth-1">
+                <div class="text-[10px] font-mono text-cyan-400 tracking-[0.2em] uppercase">CENTRAL POS TERMINAL</div>
+                <h2 class="text-2xl font-black font-orbitron text-white tracking-wider mt-0.5" style="text-shadow: 0 0 20px rgba(56, 189, 248, 0.6);">AUTHENTICATE</h2>
+                <div class="text-[11px] text-slate-400 mt-1 font-mono">NODE://ASIA-SE1 · RTDB LIVE</div>
+              </div>
+
+              <!-- Beveled Metallic Chassis Card -->
+              <div class="w-full rounded-2xl metallic-chassis p-5 relative layer-depth-2 backdrop-blur-xl">
+                <!-- Tech Screws in Corners -->
+                <div class="absolute top-2 left-2 w-2 h-2 rounded-full bg-slate-700 border border-slate-500 flex items-center justify-center text-[6px] text-slate-400">×</div>
+                <div class="absolute top-2 right-2 w-2 h-2 rounded-full bg-slate-700 border border-slate-500 flex items-center justify-center text-[6px] text-slate-400">×</div>
+                <div class="absolute bottom-2 left-2 w-2 h-2 rounded-full bg-slate-700 border border-slate-500 flex items-center justify-center text-[6px] text-slate-400">×</div>
+                <div class="absolute bottom-2 right-2 w-2 h-2 rounded-full bg-slate-700 border border-slate-500 flex items-center justify-center text-[6px] text-slate-400">×</div>
+
+                <form onsubmit="event.preventDefault();" class="space-y-4 pt-1">
+                  <div>
+                    <div class="flex items-center justify-between mb-1">
+                      <label class="text-[10px] font-orbitron font-bold text-cyan-300 tracking-wider">OPERATOR ID</label>
+                      <span class="text-[9px] font-mono text-slate-500">SYS.USR</span>
+                    </div>
+                    <div class="relative">
+                      <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-cyan-400 text-xs font-mono">></span>
+                      <input type="email" value="admin@mizoramkvib.in" class="w-full bg-black/80 border border-cyan-500/40 rounded-lg py-2.5 pl-8 pr-3 text-xs font-mono font-bold text-cyan-200 focus:outline-none focus:border-cyan-300 focus:ring-2 focus:ring-cyan-500/30 transition-all shadow-inner">
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="flex items-center justify-between mb-1">
+                      <label class="text-[10px] font-orbitron font-bold text-cyan-300 tracking-wider">PASSPHRASE</label>
+                      <span class="text-[9px] font-mono text-cyan-400/80">AES-256</span>
+                    </div>
+                    <div class="relative">
+                      <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-cyan-400 text-xs font-mono">#</span>
+                      <input type="password" value="••••••••" class="w-full bg-black/80 border border-cyan-500/40 rounded-lg py-2.5 pl-8 pr-10 text-xs font-mono font-bold text-cyan-200 focus:outline-none focus:border-cyan-300 focus:ring-2 focus:ring-cyan-500/30 transition-all shadow-inner">
+                      <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-mono text-cyan-400 font-bold hover:text-white">EYE</button>
+                    </div>
+                  </div>
+
+                  <!-- 3D Beveled Cyber Button -->
+                  <button class="w-full py-3.5 px-4 rounded-xl btn-push-3d-cyan text-white font-orbitron font-black text-xs tracking-widest uppercase flex items-center justify-center gap-2 mt-3 cursor-pointer">
+                    <span>INITIALIZE LINK</span>
+                    <span class="text-sm">»</span>
+                  </button>
+                </form>
+              </div>
+            </div>
+
+            <!-- Bottom Telemetry Ticker -->
+            <div class="pt-3 pb-1 border-t border-cyan-500/20 flex items-center justify-between text-[10px] font-mono text-cyan-400/70 z-20">
+              <span class="truncate">LOC: AIZAWL-HQ // CH: 04</span>
+              <span class="text-emerald-400 font-bold">READY</span>
+            </div>
+          </div>
+
+          <!-- ======================================================== -->
+          <!-- CONCEPT 2: TITANIUM FORGE 3D (Brushed Armor & Molten Gold)-->
+          <!-- ======================================================== -->
+          <div id="concept-2" class="concept-screen hidden min-h-full flex flex-col justify-between p-6 relative bg-[#0d0906] text-amber-50 overflow-hidden">
+            <!-- Sweeping Gold Laser -->
+            <div class="laser-scanline-gold"></div>
+
+            <!-- Top Industrial Bar -->
+            <div class="pt-6 flex items-center justify-between z-20">
+              <div class="flex items-center gap-2">
+                <div class="w-3 h-3 rounded-full bg-amber-500 border border-amber-300 shadow-md shadow-amber-500 animate-pulse"></div>
+                <div class="font-orbitron text-xs font-extrabold tracking-widest text-amber-200">KVIB·FORGE v3</div>
+              </div>
+              <div class="text-[9px] font-mono px-2 py-0.5 rounded bg-amber-950/80 border border-amber-700/60 text-amber-400">STATE BOARD</div>
+            </div>
+
+            <!-- Middle Chiseled 3D Terminal -->
+            <div class="my-auto py-4 z-20 flex flex-col items-center">
+              
+              <!-- 3D Gold Charkha Emblem with Rotating Outer Cogs -->
+              <div class="relative w-36 h-36 flex items-center justify-center mb-6">
+                <!-- Rotating Cog Gear -->
+                <svg class="absolute inset-0 w-full h-full text-amber-500/30 spin-cw" viewBox="0 0 100 100" fill="currentColor">
+                  <path d="M50 20 A30 30 0 1 0 50 80 A30 30 0 1 0 50 20 Z" stroke="currentColor" stroke-width="2" fill="none" stroke-dasharray="4,6"/>
+                </svg>
+                <div class="absolute inset-3 rounded-full border-2 border-amber-400/50 spin-ccw" style="border-style: dashed;"></div>
+                
+                <!-- 3D Metallic Gold Core -->
+                <div class="w-24 h-24 rounded-full bg-gradient-to-br from-amber-600 via-amber-800 to-amber-950 border-2 border-amber-300 p-2 shadow-2xl shadow-amber-900/80 flex flex-col items-center justify-center relative z-10 layer-depth-3">
+                  <div class="text-3xl filter drop-shadow-md">🏵️</div>
+                  <div class="font-orbitron text-[8px] font-black text-amber-200 tracking-wider mt-0.5">KHADI</div>
+                </div>
+              </div>
+
+              <!-- Title -->
+              <div class="text-center mb-5 layer-depth-1">
+                <h2 class="text-2xl font-black font-orbitron text-amber-100 tracking-wider" style="text-shadow: 0 0 15px rgba(245, 158, 11, 0.5);">POS GATEWAY</h2>
+                <div class="text-xs text-amber-400/80 font-mono mt-0.5 font-bold">SALES &amp; INVENTORY CONTROL</div>
+              </div>
+
+              <!-- Titanium Chassis Card -->
+              <div class="w-full rounded-2xl titanium-chassis p-5 relative layer-depth-2 backdrop-blur-xl">
+                <form onsubmit="event.preventDefault();" class="space-y-4">
+                  <div>
+                    <label class="block text-[10px] font-orbitron font-bold text-amber-300 tracking-wider mb-1">CASHIER ACCOUNT</label>
+                    <input type="email" value="admin@mizoramkvib.in" class="w-full bg-black/90 border border-amber-600/40 rounded-xl py-3 px-3.5 text-xs font-mono font-bold text-amber-100 focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-500/30 transition-all shadow-inner">
+                  </div>
+
+                  <div>
+                    <div class="flex items-center justify-between mb-1">
+                      <label class="text-[10px] font-orbitron font-bold text-amber-300 tracking-wider">SECRET PASSCODE</label>
+                      <span class="text-[10px] text-amber-400 font-bold cursor-pointer font-mono">FORGOT?</span>
+                    </div>
+                    <input type="password" value="••••••••" class="w-full bg-black/90 border border-amber-600/40 rounded-xl py-3 px-3.5 text-xs font-mono font-bold text-amber-100 focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-500/30 transition-all shadow-inner">
+                  </div>
+
+                  <!-- 3D Heavy Gold Button -->
+                  <button class="w-full py-4 px-4 rounded-xl btn-push-3d-gold text-slate-950 font-orbitron font-black text-xs tracking-widest uppercase flex items-center justify-center gap-2 mt-2 cursor-pointer">
+                    <span>ENTER TERMINAL</span>
+                    <span class="text-base font-black">▶</span>
+                  </button>
+                </form>
+              </div>
+            </div>
+
+            <!-- Bottom Badge -->
+            <div class="pt-3 pb-1 border-t border-amber-500/20 text-center text-[10px] font-mono text-amber-300/70 z-20">
+              <span>● CERTIFIED KHADI &amp; ARTISANAL CRAFTS PORTAL ●</span>
+            </div>
+          </div>
+
+          <!-- ======================================================== -->
+          <!-- CONCEPT 3: NEON HOLOGRAM VISOR (3D Floating Glass Visor)  -->
+          <!-- ======================================================== -->
+          <div id="concept-3" class="concept-screen hidden min-h-full flex flex-col justify-between p-6 relative bg-gradient-to-b from-[#0b0416] via-[#05020c] to-[#010005] text-purple-100 overflow-hidden">
+            <!-- Ambient Floating Grid -->
+            <div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: radial-gradient(#a855f7 1px, transparent 1px); background-size: 20px 20px;"></div>
+
+            <!-- Top Visor Telemetry -->
+            <div class="pt-6 flex items-center justify-between z-20">
+              <div class="flex items-center gap-2">
+                <span class="font-orbitron text-xs font-black text-purple-400 tracking-widest">VISOR//HUD</span>
+                <span class="text-[9px] font-mono px-2 py-0.5 rounded-full bg-purple-900/50 border border-purple-500 text-purple-300">ONLINE</span>
+              </div>
+              <div class="text-[10px] font-mono text-cyan-400">FPS: 60.0</div>
+            </div>
+
+            <!-- Middle Floating Holographic Visor -->
+            <div class="my-auto py-4 z-20 flex flex-col items-center">
+              
+              <!-- 3D Floating Projector Ring -->
+              <div class="relative w-32 h-32 flex items-center justify-center mb-5">
+                <div class="absolute inset-0 rounded-full border border-purple-500/40 spin-cw"></div>
+                <div class="absolute inset-2 rounded-full border border-cyan-400/40 spin-ccw"></div>
+                <div class="absolute inset-0 bg-purple-600/15 rounded-full blur-2xl"></div>
+
+                <div class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-purple-900/80 to-slate-900/90 border border-purple-400/60 flex items-center justify-center text-3xl shadow-xl shadow-purple-950 layer-depth-3">
+                  <span>🏛️</span>
+                </div>
+              </div>
+
+              <!-- Visor Heading -->
+              <div class="text-center mb-5 layer-depth-1">
+                <h2 class="text-3xl font-black font-orbitron text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-300 to-pink-400 tracking-wider">
+                  NEO PORTAL
+                </h2>
+                <div class="text-[11px] text-purple-300/80 font-mono mt-0.5">MIZORAM KVI BOARD CLOUD</div>
+              </div>
+
+              <!-- Curved Frosted Glass Visor Card -->
+              <div class="w-full rounded-3xl bg-purple-950/30 border border-purple-500/40 p-5 backdrop-blur-2xl shadow-2xl shadow-purple-950/60 layer-depth-2 relative" style="box-shadow: inset 0 0 20px rgba(168, 85, 247, 0.2), 0 20px 40px rgba(0,0,0,0.8);">
+                <form onsubmit="event.preventDefault();" class="space-y-4">
+                  <div>
+                    <label class="block text-[10px] font-orbitron font-bold text-purple-300 tracking-wider mb-1">OPERATOR EMAIL</label>
+                    <input type="email" value="admin@mizoramkvib.in" class="w-full bg-black/60 border border-purple-500/50 rounded-xl py-3 px-3.5 text-xs font-mono text-cyan-200 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-purple-500/40 transition-all">
+                  </div>
+
+                  <div>
+                    <label class="block text-[10px] font-orbitron font-bold text-purple-300 tracking-wider mb-1">SECURITY KEY</label>
+                    <input type="password" value="••••••••" class="w-full bg-black/60 border border-purple-500/50 rounded-xl py-3 px-3.5 text-xs font-mono text-cyan-200 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-purple-500/40 transition-all">
+                  </div>
+
+                  <button class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-cyan-500 via-purple-600 to-pink-500 hover:brightness-125 text-white font-orbitron font-black text-xs tracking-widest uppercase shadow-lg shadow-purple-700/50 mt-2 cursor-pointer transition-all">
+                    LAUNCH INTERFACE ✦
+                  </button>
+                </form>
+              </div>
+            </div>
+
+            <!-- Bottom Visor Ticker -->
+            <div class="pt-3 pb-1 border-t border-purple-500/20 text-center text-[10px] font-mono text-purple-400/80 z-20">
+              <span>HOLOGRAPHIC ENCRYPTED SESSION ACTIVE</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Interactive Comparison Cards Below -->
+  <section class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 border-t border-slate-800">
+    <!-- Concept 1 Card -->
+    <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-cyan-400 transition-all cursor-pointer" onclick="chooseConcept(1)">
+      <div class="flex items-center justify-between mb-3">
+        <span class="text-xs font-orbitron font-bold px-2.5 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">Concept 1</span>
+        <span class="text-xs font-mono text-cyan-400 font-bold">Top Flash 3D</span>
+      </div>
+      <h3 class="text-base font-bold font-orbitron text-white mb-1.5">Cyber-Deck 3000</h3>
+      <p class="text-xs text-slate-400 leading-relaxed mb-4">
+        Hmanlai Adobe Flash cybernetic cockpit feel. Rotating telemetry HUD rings, sweeping cyan laser scanline, beveled titanium chassis, and real 3D push buttons!
+      </p>
+      <div class="text-xs text-cyan-400 font-bold font-orbitron flex items-center gap-1">
+        <span>PREVIEW IN 3D</span> <span>➔</span>
+      </div>
+    </div>
+
+    <!-- Concept 2 Card -->
+    <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-amber-400 transition-all cursor-pointer" onclick="chooseConcept(2)">
+      <div class="flex items-center justify-between mb-3">
+        <span class="text-xs font-orbitron font-bold px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">Concept 2</span>
+        <span class="text-xs font-mono text-amber-400 font-bold">Industrial Gold</span>
+      </div>
+      <h3 class="text-base font-bold font-orbitron text-white mb-1.5">Titanium Forge 3D</h3>
+      <p class="text-xs text-slate-400 leading-relaxed mb-4">
+        Heavy brushed armor plate, chiseled gold bevels, and rotating 3D Charkha gear cogs. Chunky mechanical tactile buttons with deep amber neon glow.
+      </p>
+      <div class="text-xs text-amber-400 font-bold font-orbitron flex items-center gap-1">
+        <span>PREVIEW IN 3D</span> <span>➔</span>
+      </div>
+    </div>
+
+    <!-- Concept 3 Card -->
+    <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-purple-400 transition-all cursor-pointer" onclick="chooseConcept(3)">
+      <div class="flex items-center justify-between mb-3">
+        <span class="text-xs font-orbitron font-bold px-2.5 py-1 rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/20">Concept 3</span>
+        <span class="text-xs font-mono text-purple-400 font-bold">Holo Visor</span>
+      </div>
+      <h3 class="text-base font-bold font-orbitron text-white mb-1.5">Neo-Holo Glass Visor</h3>
+      <p class="text-xs text-slate-400 leading-relaxed mb-4">
+        Curved 3D futuristic glass HUD visor, holographic projection beam, ambient particle field, and glowing neon gradient refraction.
+      </p>
+      <div class="text-xs text-purple-400 font-bold font-orbitron flex items-center gap-1">
+        <span>PREVIEW IN 3D</span> <span>➔</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive 3D Physics & Tilt Engine Script -->
+  <script>
+    let activeConcept = 1;
+    let isDesktopMode = false;
+
+    // Concept Switcher
+    function chooseConcept(num) {
+      activeConcept = num;
+      for (let i = 1; i <= 3; i++) {
+        const screen = document.getElementById('concept-' + i);
+        if (screen) screen.classList.add('hidden');
+        const btn = document.getElementById('btn-c' + i);
+        if (btn) {
+          if (i === num) {
+            btn.className = "px-3.5 py-2 rounded-lg bg-cyan-500 text-black shadow-lg shadow-cyan-500/30 transition-all flex items-center gap-1.5";
+          } else {
+            btn.className = "px-3.5 py-2 rounded-lg text-slate-400 hover:text-white transition-all flex items-center gap-1.5";
+          }
+        }
+      }
+      const active = document.getElementById('concept-' + num);
+      if (active) active.classList.remove('hidden');
+    }
+
+    // Viewport Mode Switcher
+    function changeDevice(mode) {
+      const frame = document.getElementById('phone-frame');
+      const notch = document.getElementById('phone-notch');
+      const btnMob = document.getElementById('btn-mob');
+      const btnDesk = document.getElementById('btn-desk');
+
+      if (mode === 'mobile') {
+        isDesktopMode = false;
+        frame.className = "phone-frame";
+        notch.style.display = "flex";
+        btnMob.className = "px-3 py-2 rounded-lg bg-slate-800 text-cyan-400 transition-all flex items-center gap-1.5";
+        btnDesk.className = "px-3 py-2 rounded-lg text-slate-400 hover:text-white transition-all flex items-center gap-1.5";
+      } else {
+        isDesktopMode = true;
+        frame.className = "w-full max-w-4xl h-[760px] rounded-3xl shadow-2xl overflow-hidden border border-cyan-500/40 relative transition-all duration-300";
+        notch.style.display = "none";
+        btnDesk.className = "px-3 py-2 rounded-lg bg-slate-800 text-cyan-400 transition-all flex items-center gap-1.5";
+        btnMob.className = "px-3 py-2 rounded-lg text-slate-400 hover:text-white transition-all flex items-center gap-1.5";
+      }
+      // Reset tilt
+      document.getElementById('card-3d-tilt').style.transform = 'rotateX(0deg) rotateY(0deg)';
+    }
+
+    // Interactive Real-Time 3D Tilt Engine
+    const tiltCard = document.getElementById('card-3d-tilt');
+    const container = document.getElementById('phone-frame');
+
+    container.addEventListener('mousemove', (e) => {
+      const rect = container.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      // Calculate rotation angles (max 18 degrees)
+      const rotateX = ((y - centerY) / centerY) * -16;
+      const rotateY = ((x - centerX) / centerX) * 16;
+      
+      tiltCard.style.transform = `rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.02, 1.02, 1.02)`;
+    });
+
+    container.addEventListener('mouseleave', () => {
+      tiltCard.style.transform = 'rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+    });
+
+    // Touch support for mobile devices
+    container.addEventListener('touchmove', (e) => {
+      if (!e.touches[0]) return;
+      const rect = container.getBoundingClientRect();
+      const x = e.touches[0].clientX - rect.left;
+      const y = e.touches[0].clientY - rect.top;
+      
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      const rotateX = ((y - centerY) / centerY) * -14;
+      const rotateY = ((x - centerX) / centerX) * 14;
+      
+      tiltCard.style.transform = `rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg)`;
+    }, { passive: true });
+
+    container.addEventListener('touchend', () => {
+      tiltCard.style.transform = 'rotateX(0deg) rotateY(0deg)';
+    });
+  </script>
+</body>
+</html>
